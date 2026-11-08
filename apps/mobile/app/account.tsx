@@ -20,7 +20,7 @@ export default function AccountScreen() {
         ? await authClient.signUp.email({ name: name.trim(), email: email.trim(), password })
         : await authClient.signIn.email({ email: email.trim(), password });
       if (result.error) setMessage(result.error.message || "تحقق من البيانات وحاول مجدداً.");
-      else router.replace("/lessons");
+      else router.replace("/dashboard");
     } catch {
       setMessage("تعذر الاتصال بالخادم. تحقق من عنوان الخدمة وحاول مجدداً.");
     } finally {
@@ -42,7 +42,7 @@ export default function AccountScreen() {
       {session?.user ? <>
         <Text style={styles.title}>مرحباً، {session.user.name}</Text>
         <Text style={styles.muted}>{session.user.email}</Text>
-        <Pressable style={styles.button} onPress={() => router.replace("/lessons")}><Text style={styles.buttonText}>متابعة التعلم</Text></Pressable>
+        <Pressable style={styles.button} onPress={() => router.replace("/dashboard")}><Text style={styles.buttonText}>متابعة التعلم</Text></Pressable>
         <Pressable style={styles.secondary} onPress={signOut}><Text style={styles.secondaryText}>تسجيل الخروج</Text></Pressable>
       </> : <>
         <Text style={styles.title}>{mode === "signup" ? "أنشئ حسابك" : "تسجيل الدخول"}</Text>
