@@ -45,3 +45,19 @@ export async function apiGetAuthenticated<T>(path: string): Promise<T> {
   }
   return result as T;
 }
+
+export async function apiDelete<T>(path: string): Promise<T> {
+  if (!apiBaseUrl) throw new Error("أضف EXPO_PUBLIC_API_URL إلى إعدادات تطبيق الهاتف.");
+  const cookie = await authClient.getCookie();
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: "DELETE",
+    headers: cookie ? { Cookie: cookie } : {},
+    credentials: "omit",
+  });
+  const result = await response.json().catch(() => ({})) as { error?: string };
+  if (!response.ok) {
+    if (response.status === 401) throw new Error("انتهت جلسة الدخول. سجّل الدخول مرة أخرى.");
+    throw new Error(result.error || "تعذر تنفيذ العملية.");
+  }
+  return result as T;
+}
