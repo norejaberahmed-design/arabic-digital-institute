@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
-import { apiGet } from "../../lib/api";
+import { apiGet, apiPost } from "../../lib/api";
 
 type Lesson = {
   title: string; summary: string; objective: string; durationMin: number;
@@ -19,6 +19,11 @@ export default function LessonDetailScreen() {
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [correct, setCorrect] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -29,6 +34,37 @@ export default function LessonDetailScreen() {
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [slug]);
+
+  async function submitAnswer(activityId: string) {
+    if (!selected || typeof slug !== "string" || busy) return;
+    setBusy(true);
+    setFeedback("");
+    try {
+      const result = await apiPost<{ data: { isCorrect: boolean; explanation?: string } }>("/api/progress", {
+        action: "attempt", lessonSlug: slug, activityId, answer: selected,
+      });
+      setCorrect(result.data.isCorrect);
+      setFeedback(result.data.isCorrect ? "إجابة صحيحة! أحسنت. " + (result.data.explanation || "") : "حاول مرة أخرى. " + (result.data.explanation || ""));
+    } catch (reason) {
+      setFeedback(reason instanceof Error ? reason.message : "تعذر حفظ الإجابة.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function finishLesson() {
+    if (typeof slug !== "string" || busy) return;
+    setBusy(true);
+    try {
+      await apiPost("/api/progress", { action: "complete", lessonSlug: slug });
+      setCompleted(true);
+      setFeedback("تم حفظ إكمال الدرس في حسابك.");
+    } catch (reason) {
+      setFeedback(reason instanceof Error ? reason.message : "تعذر حفظ التقدم.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
@@ -52,8 +88,17 @@ export default function LessonDetailScreen() {
             <Text style={styles.translit}>{item.transliteration}</Text>
             <Text style={styles.muted}>{item.english}</Text>
           </View>)}
-          {section.prompt && <Text style={styles.prompt}>{section.prompt} — سجّل الدخول عبر نسخة الويب لتنفيذ الاختبار وحفظ التقدم.</Text>}
+          {section.prompt && <>
+            <Text style={styles.prompt}>{section.prompt}</Text>
+            {section.options?.map(option => <Pressable key={option.id} onPress={() => { setSelected(option.id); setFeedback(""); }} style={[styles.option, selected === option.id && styles.optionSelected]}>
+              <Text style={styles.optionText}>{option.label}</Text>
+            </Pressable>)}
+            <Pressable style={styles.button} disabled={!selected || busy} onPress={() => submitAnswer(section.id)}><Text style={styles.buttonText}>{busy ? "جارٍ التحقق..." : "تحقق واحفظ الإجابة"}</Text></Pressable>
+          </>}
         </View>)}
+        {!!feedback && <Text style={correct ? styles.success : styles.error}>{feedback}</Text>}
+        <Pressable style={[styles.button, completed && styles.done]} disabled={busy || completed} onPress={finishLesson}><Text style={styles.buttonText}>{completed ? "اكتمل الدرس" : "إنهاء الدرس وحفظ التقدم"}</Text></Pressable>
+        <Link href="/account" style={styles.accountLink}>إدارة الحساب / تسجيل الدخول</Link>
       </>}
     </ScrollView>
   );
@@ -72,6 +117,14 @@ const styles = StyleSheet.create({
   word: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#f0efe9" },
   arabic: { color: "#173e33", fontSize: 24, fontWeight: "700", textAlign: "right" },
   translit: { color: "#9a8358", fontSize: 13, marginTop: 2 },
-  prompt: { color: "#718078", fontSize: 13, lineHeight: 23, marginTop: 10 },
-  error: { color: "#9a493b", marginTop: 24, lineHeight: 24 },
+  prompt: { color: "#173e33", fontWeight: "700", fontSize: 15, lineHeight: 24, marginTop: 10, marginBottom: 8 },
+  option: { borderWidth: 1, borderColor: "#e7e6df", backgroundColor: "#fff", padding: 13, borderRadius: 8, marginTop: 7 },
+  optionSelected: { borderColor: "#245b49", backgroundColor: "#edf2ec" },
+  optionText: { color: "#173e33", textAlign: "right" },
+  button: { backgroundColor: "#245b49", padding: 14, borderRadius: 9, marginTop: 14, alignItems: "center" },
+  buttonText: { color: "#fff", fontWeight: "700" },
+  done: { backgroundColor: "#718078" },
+  success: { color: "#245b49", backgroundColor: "#e7f2e8", padding: 12, borderRadius: 8, marginTop: 14, lineHeight: 22 },
+  error: { color: "#9a493b", marginTop: 14, lineHeight: 24 },
+  accountLink: { color: "#245b49", textAlign: "center", marginTop: 18 },
 });
