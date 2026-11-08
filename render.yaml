@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: adi-arabic-institute-preview-fzjr
+    name: adi-arabic-institute-preview
     runtime: node
     plan: free
     region: frankfurt
