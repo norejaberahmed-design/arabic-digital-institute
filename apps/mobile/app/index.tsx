@@ -17,7 +17,7 @@ export default function HomeScreen() {
       <View style={styles.header}>
         <View style={styles.brandMark}><Text style={styles.brandLetter}>ع</Text></View>
         <Text style={styles.brand}>المعهد الرقمي</Text>
-        <Text style={styles.language}>EN</Text>
+        <Pressable onPress={() => router.push("/account")}><Text style={styles.language}>حسابي</Text></Pressable>
       </View>
 
       <View style={styles.hero}>
