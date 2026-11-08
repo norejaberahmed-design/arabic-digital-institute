@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { Link, router } from "expo-router";
+import { apiDelete } from "../lib/api";
 import { authClient } from "../lib/auth-client";
 
 export default function AccountScreen() {
@@ -10,6 +11,8 @@ export default function AccountScreen() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const { data: session, isPending } = authClient.useSession();
 
   async function submit() {
@@ -23,6 +26,20 @@ export default function AccountScreen() {
       else router.replace("/dashboard");
     } catch {
       setMessage("تعذر الاتصال بالخادم. تحقق من عنوان الخدمة وحاول مجدداً.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteAccount() {
+    if (deleteConfirmation !== "DELETE" || busy) return;
+    setBusy(true);
+    setDeleteError("");
+    try {
+      await apiDelete("/api/account");
+      router.replace("/");
+    } catch (reason) {
+      setDeleteError(reason instanceof Error ? reason.message : "تعذر حذف الحساب.");
     } finally {
       setBusy(false);
     }
@@ -44,6 +61,11 @@ export default function AccountScreen() {
         <Text style={styles.muted}>{session.user.email}</Text>
         <Pressable style={styles.button} onPress={() => router.replace("/dashboard")}><Text style={styles.buttonText}>متابعة التعلم</Text></Pressable>
         <Pressable style={styles.secondary} onPress={signOut}><Text style={styles.secondaryText}>تسجيل الخروج</Text></Pressable>
+        <Text style={styles.deleteTitle}>حذف الحساب والبيانات</Text>
+        <Text style={styles.muted}>اكتب DELETE لتأكيد حذف حسابك وسجل تعلمك نهائياً.</Text>
+        <TextInput style={styles.input} value={deleteConfirmation} onChangeText={setDeleteConfirmation} autoCapitalize="characters" placeholder="DELETE" />
+        <Pressable style={[styles.deleteButton, (deleteConfirmation !== "DELETE" || busy) && styles.disabled]} disabled={deleteConfirmation !== "DELETE" || busy} onPress={deleteAccount}><Text style={styles.buttonText}>حذف الحساب نهائياً</Text></Pressable>
+        {!!deleteError && <Text style={styles.message}>{deleteError}</Text>}
       </> : <>
         <Text style={styles.title}>{mode === "signup" ? "أنشئ حسابك" : "تسجيل الدخول"}</Text>
         <Text style={styles.muted}>احفظ تقدمك وتابع تعلم العربية من هاتفك.</Text>
@@ -77,5 +99,7 @@ const styles = StyleSheet.create({
   secondary: { padding: 14, alignItems: "center", marginTop: 10 },
   secondaryText: { color: "#245b49", fontWeight: "700" },
   disabled: { opacity: 0.6 },
+  deleteTitle: { color: "#8b4035", fontSize: 17, fontWeight: "700", marginTop: 32 },
+  deleteButton: { backgroundColor: "#8b4035", padding: 14, borderRadius: 9, marginTop: 8, alignItems: "center" },
   message: { color: "#9a493b", marginTop: 15, lineHeight: 22 },
 });
