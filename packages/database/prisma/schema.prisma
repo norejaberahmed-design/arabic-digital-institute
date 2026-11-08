@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PublicationStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ProficiencyLevel {
+  PRE_A1
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  language    String   @default("ar")
+  instructionLanguage String @default("en")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  levels      Level[]
+}
+
+model Level {
+  id          String           @id @default(cuid())
+  courseId    String
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  code        ProficiencyLevel
+  title       String
+  description String
+  position    Int
+  lessons     Lesson[]
+  @@unique([courseId, code])
+  @@index([courseId, position])
+}
+
+model Lesson {
+  id          String            @id @default(cuid())
+  levelId     String
+  level       Level             @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  slug        String
+  title       String
+  summary     String
+  objective   String
+  durationMin Int               @default(7)
+  status      PublicationStatus @default(DRAFT)
+  position    Int
+  content     Json
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  @@unique([levelId, slug])
+  @@index([levelId, status, position])
+}
