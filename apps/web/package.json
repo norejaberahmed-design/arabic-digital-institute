@@ -13,8 +13,8 @@
     "@adi/database": "workspace:*",
     "better-auth": "^1.7.18",
     "next": "15.5.29",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "@better-auth/expo": "^1.7.18"
   },
   "devDependencies": {
