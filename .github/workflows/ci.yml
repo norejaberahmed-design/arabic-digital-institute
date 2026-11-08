@@ -25,6 +25,7 @@ jobs:
           --health-retries 5
     env:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/adi_ci?schema=public
+      DIRECT_URL: postgresql://ci:ci@localhost:5432/adi_ci?schema=public
       BETTER_AUTH_SECRET: ci-only-secret-not-used-in-production-000000000000
       BETTER_AUTH_URL: http://localhost:3000
     steps:
