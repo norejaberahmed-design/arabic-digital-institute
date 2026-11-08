@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+:root{--olive:#245b49;--olive-dark:#173e33;--paper:#f7f6f2;--sand:#c4a875;--ink:#202b26;--muted:#718078;--line:#e7e6df}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans Arabic',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1120px;margin:auto;padding:0 34px}
+.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:17px}
+.brand-mark{width:36px;height:36px;border-radius:12px;background:var(--olive);color:white;display:grid;place-items:center;font-size:23px}
+.language{font-size:13px;color:var(--muted)}
+.hero{min-height:440px;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:30px;padding:48px 0 55px}
+.eyebrow,.section-kicker{font-size:11px;letter-spacing:2px;color:var(--sand);font-weight:700}
+.hero h1{font-size:clamp(42px,6vw,68px);line-height:1.18;letter-spacing:-2px;margin:18px 0;color:var(--olive-dark)}
+.intro{max-width:460px;font-size:17px;line-height:1.9;color:#64736b}
+.primary-action{display:inline-flex;align-items:center;gap:22px;background:var(--olive);color:#fff;padding:14px 22px;border-radius:9px;margin-top:17px;font-weight:600;transition:transform .2s,background .2s}
+.primary-action:hover{background:var(--olive-dark);transform:translateY(-2px)}
+.hero-note{font-size:12px;color:#87928c;margin-top:18px}
+.hero-art{height:320px;position:relative;display:grid;place-items:center;overflow:hidden}
+.art-orbit{position:absolute;border:1px solid #d9d4c5;border-radius:50%;transform:rotate(-24deg)}
+.orbit-one{width:330px;height:220px}.orbit-two{width:260px;height:300px;transform:rotate(36deg)}
+.word-card{position:relative;z-index:1;width:220px;height:230px;background:#fff;border:1px solid #eeece4;border-radius:18px;box-shadow:0 22px 60px #263d3014;display:flex;align-items:center;justify-content:center;flex-direction:column;transform:rotate(-4deg)}
+.word-label{font-size:12px;color:var(--muted)}
+.word-card strong{font-size:56px;color:var(--olive);margin:6px 0 0}
+.transliteration{font-size:15px;color:#9a8358;letter-spacing:1px}
+.translation{font-size:13px;color:var(--muted);margin-top:8px}
+.floating-dot{position:absolute;width:43px;height:43px;border-radius:14px;background:#e9eee8;color:var(--olive);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 20px #263d3010}
+.dot-one{top:35px;right:18%}.dot-two{bottom:40px;left:17%;background:#efe8d9;color:#9a8358}
+.welcome-row{display:flex;align-items:end;justify-content:space-between;padding:26px 0 20px;border-top:1px solid var(--line)}
+.section-kicker{letter-spacing:0;margin:0 0 5px}
+.welcome-row h2{font-size:27px;margin:0;color:var(--olive-dark)}
+.muted{margin:6px 0 0;color:var(--muted);font-size:14px}
+.level-count{font-size:12px;color:var(--muted);padding-bottom:5px}
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding-bottom:55px}
+.level-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:22px;min-height:190px;display:flex;flex-direction:column}
+.level-card.featured{background:#edf2ec;border-color:#dce6dc}
+.level-card-top{display:flex;justify-content:space-between;align-items:center}
+.level-code{font-size:11px;font-weight:700;color:var(--olive);background:#e5ece5;padding:5px 9px;border-radius:5px}
+.level-number{font-size:12px;color:#b2b9b2}
+.level-card h3{font-size:19px;margin:20px 0 4px}
+.level-card p{font-size:13px;color:var(--muted);margin:0 0 20px}
+.level-link{font-size:13px;font-weight:600;color:var(--olive);margin-top:auto;display:flex;justify-content:space-between}
+.footer{border-top:1px solid var(--line);padding:20px 0 28px;display:flex;justify-content:space-between;color:#8a958e;font-size:12px}
+@media(max-width:700px){.shell{padding:0 20px}.topbar{height:68px}.hero{grid-template-columns:1fr;padding:38px 0 30px;gap:5px}.hero h1{font-size:48px}.intro{font-size:15px}.hero-art{height:250px;grid-row:1}.word-card{width:180px;height:190px}.word-card strong{font-size:47px}.art-orbit.orbit-one{width:270px;height:180px}.art-orbit.orbit-two{height:245px;width:220px}.welcome-row{align-items:start;gap:10px;flex-direction:column}.welcome-row h2{font-size:24px}.level-grid{grid-template-columns:1fr;gap:10px}.level-card{min-height:165px;padding:19px}.footer{gap:12px;flex-direction:column}}
