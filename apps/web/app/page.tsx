@@ -62,6 +62,7 @@ export default function HomePage() {
       <footer className="footer">
         <span>المعهد الرقمي لتعليم العربية</span>
         <span>تعلم لغة، وافتح عالماً.</span>
+        <nav aria-label="روابط قانونية"><Link href="/privacy">الخصوصية</Link><Link href="/terms">شروط الاستخدام</Link></nav>
       </footer>
     </main>
   );
