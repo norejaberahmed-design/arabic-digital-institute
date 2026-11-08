@@ -244,7 +244,143 @@ async function main() {
     }
   });
 
-  console.log("Seeded the contemporary Arabic course, seven CEFR-aligned levels, and two Pre-A1 lessons.");
+  const extraBeginnerLessons = [
+    { slug: "where-are-you-from", title: "Where are you from?", summary: "Ask where someone is from and answer simply.", objective: "Ask and answer a question about a country.", durationMin: 7, position: 2,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "A simple introduction", lines: [
+          { speaker: "A", arabic: "من أين أنت؟", transliteration: "min ayna anta?", english: "Where are you from?" },
+          { speaker: "B", arabic: "أنا من أمريكا", transliteration: "ana min Amrika", english: "I am from America." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Useful words", items: [
+          { arabic: "من أين", transliteration: "min ayna", english: "from where" },
+          { arabic: "أنا", transliteration: "ana", english: "I" },
+          { arabic: "من", transliteration: "min", english: "from" }
+        ]},
+        { id: "practice-country", type: "multiple-choice", title: "Practice", prompt: "Which phrase means “I am from America”?", options: [
+          { id: "a", label: "أنا من أمريكا" }, { id: "b", label: "ما اسمك؟" }, { id: "c", label: "إلى اللقاء" }
+        ], answer: "a", explanation: "أنا من أمريكا means “I am from America”." }
+      ]}
+    },
+    { slug: "what-language-do-you-speak", title: "What language do you speak?", summary: "Talk about the languages you speak.", objective: "Ask about a language and name one you speak.", durationMin: 7, position: 3,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "Talking about language", lines: [
+          { speaker: "A", arabic: "ما اللغة التي تتحدثها؟", transliteration: "ma al-lugha allati tatahaddathuha?", english: "What language do you speak?" },
+          { speaker: "B", arabic: "أتحدث الإنجليزية", transliteration: "atahadath al-ingliziyya", english: "I speak English." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Language words", items: [
+          { arabic: "لغة", transliteration: "lugha", english: "language" },
+          { arabic: "أتحدث", transliteration: "atahadath", english: "I speak" },
+          { arabic: "الإنجليزية", transliteration: "al-ingliziyya", english: "English" }
+        ]},
+        { id: "practice-language", type: "multiple-choice", title: "Practice", prompt: "How do you say “I speak English”?", options: [
+          { id: "a", label: "أنا من أمريكا" }, { id: "b", label: "أتحدث الإنجليزية" }, { id: "c", label: "ما اسمك؟" }
+        ], answer: "b", explanation: "أتحدث الإنجليزية means “I speak English”." }
+      ]}
+    },
+    { slug: "numbers-one-to-ten", title: "Numbers one to ten", summary: "Recognize and use the first ten Arabic numbers.", objective: "Identify common Arabic number words from one to ten.", durationMin: 8, position: 4,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "numbers", type: "vocabulary", title: "Count from one to ten", items: [
+          { arabic: "واحد", transliteration: "wahid", english: "one" }, { arabic: "اثنان", transliteration: "ithnan", english: "two" },
+          { arabic: "ثلاثة", transliteration: "thalatha", english: "three" }, { arabic: "أربعة", transliteration: "arba'a", english: "four" },
+          { arabic: "خمسة", transliteration: "khamsa", english: "five" }, { arabic: "ستة", transliteration: "sitta", english: "six" },
+          { arabic: "سبعة", transliteration: "sab'a", english: "seven" }, { arabic: "ثمانية", transliteration: "thamaniya", english: "eight" },
+          { arabic: "تسعة", transliteration: "tis'a", english: "nine" }, { arabic: "عشرة", transliteration: "ashara", english: "ten" }
+        ]},
+        { id: "practice-number", type: "multiple-choice", title: "Practice", prompt: "Which word means “five”?", options: [
+          { id: "a", label: "ثلاثة" }, { id: "b", label: "خمسة" }, { id: "c", label: "عشرة" }
+        ], answer: "b", explanation: "خمسة (khamsa) means five." }
+      ]}
+    },
+    { slug: "my-family", title: "My family", summary: "Name close family members in simple sentences.", objective: "Recognize and name mother, father, and family.", durationMin: 8, position: 5,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "Talking about family", lines: [
+          { speaker: "A", arabic: "من هذا؟", transliteration: "man hadha?", english: "Who is this?" },
+          { speaker: "B", arabic: "هذا أبي", transliteration: "hadha abi", english: "This is my father." },
+          { speaker: "A", arabic: "ومن هذه؟", transliteration: "wa-man hadhihi?", english: "And who is this?" },
+          { speaker: "B", arabic: "هذه أمي", transliteration: "hadhihi ummi", english: "This is my mother." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Family words", items: [
+          { arabic: "أب", transliteration: "ab", english: "father" }, { arabic: "أم", transliteration: "umm", english: "mother" },
+          { arabic: "أخي", transliteration: "akhi", english: "my brother" }, { arabic: "أختي", transliteration: "ukhti", english: "my sister" }
+        ]},
+        { id: "practice-family", type: "multiple-choice", title: "Practice", prompt: "Which phrase means “my mother”?", options: [
+          { id: "a", label: "أبي" }, { id: "b", label: "أخي" }, { id: "c", label: "أمي" }
+        ], answer: "c", explanation: "أمي (ummi) means my mother." }
+      ]}
+    },
+    { slug: "at-the-cafe", title: "At the cafe", summary: "Use a polite phrase to ask for water or coffee.", objective: "Make a simple request politely.", durationMin: 8, position: 6,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "Making a request", lines: [
+          { speaker: "A", arabic: "ماذا تريد؟", transliteration: "madha turid?", english: "What would you like?" },
+          { speaker: "B", arabic: "أريد ماء من فضلك", transliteration: "urid ma'an min fadlik", english: "I would like water, please." },
+          { speaker: "A", arabic: "تفضل", transliteration: "tafaddal", english: "Here you are." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Useful words", items: [
+          { arabic: "أريد", transliteration: "urid", english: "I would like" }, { arabic: "ماء", transliteration: "ma", english: "water" },
+          { arabic: "قهوة", transliteration: "qahwa", english: "coffee" }, { arabic: "من فضلك", transliteration: "min fadlik", english: "please" }
+        ]},
+        { id: "practice-cafe", type: "multiple-choice", title: "Practice", prompt: "Which phrase politely means “please”?", options: [
+          { id: "a", label: "من فضلك" }, { id: "b", label: "من أين" }, { id: "c", label: "أنا" }
+        ], answer: "a", explanation: "من فضلك is a polite way to say please." }
+      ]}
+    },
+    { slug: "everyday-expressions", title: "Everyday expressions", summary: "Use thank you, excuse me, and goodbye.", objective: "Choose an appropriate expression in a simple interaction.", durationMin: 7, position: 7,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "A polite exchange", lines: [
+          { speaker: "A", arabic: "شكرا", transliteration: "shukran", english: "Thank you." },
+          { speaker: "B", arabic: "عفوا", transliteration: "afwan", english: "You're welcome." },
+          { speaker: "A", arabic: "إلى اللقاء", transliteration: "ila al-liqa", english: "Goodbye." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Useful expressions", items: [
+          { arabic: "شكرا", transliteration: "shukran", english: "thank you" }, { arabic: "عفوا", transliteration: "afwan", english: "you're welcome / excuse me" },
+          { arabic: "إلى اللقاء", transliteration: "ila al-liqa", english: "goodbye" }
+        ]},
+        { id: "practice-expressions", type: "multiple-choice", title: "Practice", prompt: "What do you say to thank someone?", options: [
+          { id: "a", label: "عفوا" }, { id: "b", label: "شكرا" }, { id: "c", label: "إلى اللقاء" }
+        ], answer: "b", explanation: "شكرا (shukran) means thank you." }
+      ]}
+    },
+    { slug: "where-is-it", title: "Where is it?", summary: "Ask where a place or object is.", objective: "Ask a simple where-question and understand here or there.", durationMin: 7, position: 8,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "dialogue", type: "dialogue", title: "Finding a place", lines: [
+          { speaker: "A", arabic: "أين المقهى؟", transliteration: "ayna al-maqha?", english: "Where is the cafe?" },
+          { speaker: "B", arabic: "هناك", transliteration: "hunak", english: "Over there." }
+        ]},
+        { id: "vocabulary", type: "vocabulary", title: "Place words", items: [
+          { arabic: "أين", transliteration: "ayna", english: "where" }, { arabic: "هنا", transliteration: "huna", english: "here" },
+          { arabic: "هناك", transliteration: "hunak", english: "there" }, { arabic: "المقهى", transliteration: "al-maqha", english: "the cafe" }
+        ]},
+        { id: "practice-where", type: "multiple-choice", title: "Practice", prompt: "Which word means “where”?", options: [
+          { id: "a", label: "هناك" }, { id: "b", label: "أين" }, { id: "c", label: "هنا" }
+        ], answer: "b", explanation: "أين (ayna) means where." }
+      ]}
+    },
+    { slug: "pre-a1-review", title: "Your first Arabic review", summary: "Review greetings, names, countries, numbers, and polite expressions.", objective: "Use your first Arabic expressions in a short practical review.", durationMin: 9, position: 9,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "review-vocabulary", type: "vocabulary", title: "Remember these expressions", items: [
+          { arabic: "مرحبا", transliteration: "marhaban", english: "hello" }, { arabic: "اسمي", transliteration: "ismi", english: "my name" },
+          { arabic: "أنا من", transliteration: "ana min", english: "I am from" }, { arabic: "شكرا", transliteration: "shukran", english: "thank you" },
+          { arabic: "من فضلك", transliteration: "min fadlik", english: "please" }
+        ]},
+        { id: "review-1", type: "multiple-choice", title: "Review 1", prompt: "Someone says مرحبا. What does it mean?", options: [
+          { id: "a", label: "Hello" }, { id: "b", label: "Thank you" }, { id: "c", label: "Goodbye" }
+        ], answer: "a", explanation: "مرحبا is a common greeting." },
+        { id: "review-2", type: "multiple-choice", title: "Review 2", prompt: "Which phrase means “My name is…”?", options: [
+          { id: "a", label: "أين" }, { id: "b", label: "اسمي" }, { id: "c", label: "ماء" }
+        ], answer: "b", explanation: "اسمي introduces your name." }
+      ]}
+    }
+  ];
+
+  for (const lessonData of extraBeginnerLessons) {
+    await prisma.lesson.upsert({
+      where: { levelId_slug: { levelId: level.id, slug: lessonData.slug } },
+      update: { ...lessonData, status: "PUBLISHED" },
+      create: { levelId: level.id, ...lessonData, status: "PUBLISHED" },
+    });
+  }
+
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and ten original Pre-A1 lessons.");
 }
 
 main()
