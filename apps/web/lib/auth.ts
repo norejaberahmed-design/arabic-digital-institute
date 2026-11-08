@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@adi/database";
 
 const secret = process.env.BETTER_AUTH_SECRET;
+const baseURL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
 if (!secret || secret.length < 32) {
   throw new Error("BETTER_AUTH_SECRET must be set to a random value of at least 32 characters.");
 }
@@ -12,7 +13,7 @@ export const auth = betterAuth({
   appName: "Arabic Digital Institute",
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   secret,
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL,
   user: {
     additionalFields: {
       role: { type: "string", required: false, defaultValue: "LEARNER", input: false },
@@ -25,6 +26,7 @@ export const auth = betterAuth({
   },
   plugins: [expo()],
   trustedOrigins: [
+    baseURL,
     "adi://",
     ...(process.env.NODE_ENV === "development" ? ["exp://", "exp://**", "exp://192.168.*.*:*/**"] : []),
   ],
