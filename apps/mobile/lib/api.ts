@@ -1,3 +1,5 @@
+import { authClient } from "./auth-client";
+
 const configuredUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
 
 export const apiBaseUrl = configuredUrl ? configuredUrl.replace(/\/$/, "") : "";
@@ -11,7 +13,6 @@ export async function apiGet<T>(path: string): Promise<T> {
 
 export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   if (!apiBaseUrl) throw new Error("أضف EXPO_PUBLIC_API_URL إلى إعدادات تطبيق الهاتف.");
-  const { authClient } = await import("./auth-client");
   const cookie = await authClient.getCookie();
   const response = await fetch(`${apiBaseUrl}${path}`, {
     method: "POST",
