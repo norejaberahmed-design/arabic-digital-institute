@@ -5,7 +5,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function LessonsPage() {
-  let lessons: Awaited<ReturnType<typeof prisma.lesson.findMany>> = [];
+  type LessonCard = { id: string; slug: string; title: string; summary: string; objective: string; durationMin: number; level: { code: string; title: string } };
+  let lessons: LessonCard[] = [];
   let unavailable = false;
   try {
     lessons = await prisma.lesson.findMany({
@@ -21,7 +22,7 @@ export default async function LessonsPage() {
     <main className="shell lessons-shell">
       <header className="topbar">
         <Link className="brand" href="/"><span className="brand-mark">ع</span><span>المعهد الرقمي</span></Link>
-        <Link className="language" href="/">الرئيسية</Link>
+        <div className="nav-actions"><Link className="language" href="/">الرئيسية</Link><Link className="language" href="/account">حساب الطالب</Link></div>
       </header>
       <section className="lessons-heading">
         <p className="section-kicker">PRE-A1 · BEGINNER</p>

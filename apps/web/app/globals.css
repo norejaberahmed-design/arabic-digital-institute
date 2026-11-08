@@ -27,7 +27,7 @@ a{color:inherit;text-decoration:none}
 .translation{font-size:13px;color:var(--muted);margin-top:8px}
 .floating-dot{position:absolute;width:43px;height:43px;border-radius:14px;background:#e9eee8;color:var(--olive);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 20px #263d3010}
 .dot-one{top:35px;right:18%}.dot-two{bottom:40px;left:17%;background:#efe8d9;color:#9a8358}
-.welcome-row{display:flex;align-items:end;justify-content:space-between;padding:26px 0 20px;border-top:1px solid var(--line)}
+.welcome-row{display:flex;align-items:flex-end;justify-content:space-between;padding:26px 0 20px;border-top:1px solid var(--line)}
 .section-kicker{letter-spacing:0;margin:0 0 5px}
 .welcome-row h2{font-size:27px;margin:0;color:var(--olive-dark)}
 .muted{margin:6px 0 0;color:var(--muted);font-size:14px}
@@ -82,3 +82,58 @@ a{color:inherit;text-decoration:none}
 .lesson-disclaimer{font-size:12px;line-height:1.8;color:var(--muted);padding:12px 0}
 .back-link{display:inline-flex;margin:8px 0 30px}
 @media(max-width:600px){.lesson-list-card{align-items:flex-start;gap:12px;flex-wrap:wrap}.lesson-info{min-width:70%}.lesson-list-card>.level-link{margin-right:42px}.lessons-heading h1,.lesson-heading h1{font-size:31px}.lesson-section{padding:18px}.vocab-row{grid-template-columns:1fr 1fr;gap:4px}.vocab-row small{grid-column:2}}
+
+.account-panel{max-width:520px;margin:55px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px;box-shadow:0 18px 50px #263d300d}
+.account-panel h1{font-size:30px;color:var(--olive-dark);margin:10px 0}
+.auth-tabs{display:flex;gap:8px;margin:24px 0 16px;border-bottom:1px solid var(--line)}
+.auth-tab{border:0;background:transparent;padding:12px 14px;font:inherit;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+.auth-tab.active{color:var(--olive);border-color:var(--olive);font-weight:700}
+.auth-form{display:grid;gap:15px}
+.auth-form label{display:grid;gap:7px;font-size:14px;font-weight:600}
+.auth-form input{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit;direction:ltr;text-align:left;background:#fff}
+.auth-form input:focus{outline:2px solid #245b4933;border-color:var(--olive)}
+.auth-form .primary-action{justify-content:center;cursor:pointer;font:inherit;border:0}
+.auth-form .primary-action:disabled{opacity:.6}
+.account-note{font-size:12px;color:var(--muted);line-height:1.8;margin-top:18px}
+
+.nav-actions{display:flex;align-items:center;gap:18px}
+.text-action{border:0;background:transparent;color:var(--olive);font:inherit;font-size:13px;cursor:pointer}
+.dashboard-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:24px 0}
+.stat-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:4px}
+.stat-card strong{font-size:28px;color:var(--olive)}
+.stat-card span{font-size:12px;color:var(--muted)}
+.completion-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:20px}
+@media(max-width:600px){.account-panel{padding:22px;margin:30px auto}.dashboard-stats{gap:8px}.nav-actions{gap:12px}}
+
+.admin-section{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin:24px 0}
+.admin-section h2{color:var(--olive-dark);margin:0 0 16px;font-size:22px}
+.admin-lesson{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+.admin-lesson:last-child{border-bottom:0}
+.admin-lesson h3{margin:8px 0 0;font-size:17px}
+.admin-form{display:grid;gap:14px}
+.admin-form label{display:grid;gap:7px;font-size:14px;font-weight:600}
+.admin-form input,.admin-form select,.admin-form textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px;font:inherit;background:#fff;min-width:0}
+.admin-form textarea{direction:ltr;text-align:left;font-family:ui-monospace,monospace;font-size:12px}
+.admin-form .primary-action,.admin-lesson .primary-action,.secondary-action{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:11px 16px}
+.admin-lesson .primary-action{margin:0;white-space:nowrap}
+.secondary-action{background:#f4ece9;color:#914b3d;white-space:nowrap}
+@media(max-width:600px){.admin-section{padding:16px}.admin-lesson{align-items:flex-start;flex-direction:column}.admin-lesson .primary-action{margin-top:5px}}
+
+.delete-account-panel{margin-top:30px;padding:18px;border:1px solid #ead9d4;border-radius:10px;background:#fffaf9}
+.delete-account-panel h2{font-size:17px;color:#8b4035;margin:0 0 8px}
+.delete-account-panel p{font-size:13px;color:var(--muted);line-height:1.8}
+.delete-account-panel label{display:grid;gap:7px;font-size:13px;margin-top:12px}
+.delete-account-panel input{padding:10px;border:1px solid var(--line);border-radius:7px;direction:ltr}
+.danger-action{margin-top:12px;background:#8b4035;color:#fff;border:0;border-radius:8px;padding:11px 15px;font:inherit;cursor:pointer}
+.danger-action:disabled{opacity:.45;cursor:not-allowed}
+.legal-page{max-width:860px}
+.legal-page h1{font-size:34px;color:var(--olive-dark);margin:12px 0}
+.legal-page section{padding:18px 0;border-bottom:1px solid var(--line)}
+.legal-page section h2{font-size:19px;color:var(--olive-dark);margin:0 0 8px}
+.legal-page section p,.legal-note{font-size:14px;color:var(--muted);line-height:2}
+.legal-page a{color:var(--olive)}
+.footer nav{display:flex;gap:16px;flex-wrap:wrap}
+.footer nav a{color:var(--olive);font-size:12px}
+
+.speak-button{display:inline-flex;border:0;background:#edf2ec;color:var(--olive);border-radius:7px;padding:4px 8px;margin-inline-start:8px;cursor:pointer;font-size:13px}
+.speak-button:focus-visible{outline:2px solid var(--olive);outline-offset:2px}

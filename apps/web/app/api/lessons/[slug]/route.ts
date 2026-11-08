@@ -26,7 +26,16 @@ export async function GET(
     if (!lesson) {
       return NextResponse.json({ error: "LESSON_NOT_FOUND" }, { status: 404 });
     }
-    return NextResponse.json({ data: lesson });
+
+    const content = lesson.content as {
+      sections?: Array<Record<string, unknown>>;
+      [key: string]: unknown;
+    };
+    const safeContent = {
+      ...content,
+      sections: content.sections?.map(({ answer: _answer, ...section }) => section) ?? [],
+    };
+    return NextResponse.json({ data: { ...lesson, content: safeContent } });
   } catch {
     return NextResponse.json(
       { error: "LESSONS_UNAVAILABLE", message: "The lesson database is not configured yet." },

@@ -42,9 +42,19 @@ Technology choices are subject to repository and compatibility review before imp
 - Keep secrets out of source control.
 - Do not reset or destructively migrate production data without explicit approval.
 
-## Development status
+## Current implementation status
 
-This repository is being initialized. Architecture, curriculum, product requirements, and implementation milestones will be documented before expanding the application.
+- Public mobile-first web landing page and published-lesson catalog.
+- Twelve original Pre-A1 lessons across greetings, names, countries, languages, numbers, family, cafe requests, and everyday expressions, backed by PostgreSQL/Prisma seed data.
+- Email/password learner account flow using Better Auth.
+- Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
+- Learner dashboard for saved lesson completion.
+- Role-protected admin lesson authoring and publishing screen/API.
+- Privacy notice, beta terms, and authenticated account deletion with cascading removal of learner progress.
+- Expo Android app on Expo SDK 58 / Android API 36 with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, completion sync, learner dashboard, and account deletion (requires `EXPO_PUBLIC_API_URL`).
+- CI workflow for type checks and production build.
+
+This is an active launch candidate, not yet a public production release. Remaining release gates: connect a persistent PostgreSQL database, configure deployment secrets and HTTPS hosting, obtain passing CI and smoke-test results, verify the Android app on a physical device, and finish password recovery/email verification, audio/speaking, and the next curriculum levels. The administrator console and native learner sign-in/progress flows are implemented in this branch.
 
 ## Scope disclaimer
 

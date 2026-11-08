@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const learningPath = [
   { code: "Pre-A1", title: "البداية مع العربية", detail: "الحروف والتحية والتعارف", progress: "ابدأ الآن" },
   { code: "A1", title: "الحياة اليومية", detail: "الأسرة والطعام والوقت والأماكن", progress: "قريباً" },
@@ -12,7 +14,7 @@ export default function HomePage() {
           <span className="brand-mark">ع</span>
           <span>المعهد الرقمي</span>
         </a>
-        <span className="language">العربية <span aria-hidden="true">⌄</span></span>
+        <Link className="language" href="/account">حساب الطالب</Link>
       </header>
 
       <section className="hero">
@@ -60,6 +62,7 @@ export default function HomePage() {
       <footer className="footer">
         <span>المعهد الرقمي لتعليم العربية</span>
         <span>تعلم لغة، وافتح عالماً.</span>
+        <nav aria-label="روابط قانونية"><Link href="/privacy">الخصوصية</Link><Link href="/terms">شروط الاستخدام</Link></nav>
       </footer>
     </main>
   );

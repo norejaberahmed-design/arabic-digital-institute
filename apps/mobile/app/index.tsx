@@ -1,4 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 
 const colors = {
   olive: "#245b49",
@@ -10,19 +11,20 @@ const colors = {
 };
 
 export default function HomeScreen() {
+  const router = useRouter();
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <View style={styles.brandMark}><Text style={styles.brandLetter}>ع</Text></View>
         <Text style={styles.brand}>المعهد الرقمي</Text>
-        <Text style={styles.language}>EN</Text>
+        <Pressable onPress={() => router.push("/account")}><Text style={styles.language}>حسابي</Text></Pressable>
       </View>
 
       <View style={styles.hero}>
         <Text style={styles.eyebrow}>ARABIC DIGITAL INSTITUTE</Text>
         <Text style={styles.title}>العربية، خطوة{"\n"}بخطوة.</Text>
         <Text style={styles.description}>تعلم العربية التي تستخدمها في الحياة الحقيقية. استمع، تحدث، اقرأ، واكتب — كل يوم.</Text>
-        <Pressable accessibilityRole="button" style={styles.button} onPress={() => {}}>
+        <Pressable accessibilityRole="button" style={styles.button} onPress={() => router.push("/lessons")}>
           <Text style={styles.buttonText}>ابدأ رحلة التعلم</Text>
           <Text style={styles.buttonArrow}>←</Text>
         </Pressable>
