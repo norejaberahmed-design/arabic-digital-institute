@@ -52,6 +52,12 @@ jobs:
         run: pnpm typecheck
       - name: Typecheck mobile app
         run: pnpm typecheck:mobile
+      - name: Check Expo SDK dependency compatibility
+        run: pnpm --filter @adi/mobile exec expo install --check
+      - name: Export Android bundle
+        env:
+          EXPO_PUBLIC_API_URL: https://api.example.invalid
+        run: pnpm --filter @adi/mobile exec expo export --platform android
       - name: Build web app
         run: pnpm build
       - name: Start web server
