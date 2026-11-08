@@ -46,8 +46,8 @@ Do not run migrations against a production database until the target database an
 - Test answer attempts and lesson completion survive logout/login.
 - Test mobile catalog and lesson reader on a physical Android phone.
 - Configure HTTPS, domain, environment secrets, database backups, and error monitoring.
-- Add administrator role provisioning and protected content-management screens.
-- Complete mobile authentication and mobile progress synchronization.
+- Promote the first administrator using the controlled SQL step above.
+- Test native Android sign-in, cookie restoration after app restart, quiz persistence, and lesson completion on a physical device.
 - Add more original, reviewed lessons across the planned proficiency levels.
 
 ## Not yet included
