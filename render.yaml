@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: arabic-digital-institute-preview
+    name: adi-arabic-institute-preview
     runtime: node
     plan: free
     region: frankfurt
@@ -20,4 +20,4 @@ services:
       - key: BETTER_AUTH_SECRET
         generateValue: true
       - key: BETTER_AUTH_URL
-        value: https://arabic-digital-institute-preview.onrender.com
+        value: https://adi-arabic-institute-preview.onrender.com
