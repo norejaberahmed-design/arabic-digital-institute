@@ -244,6 +244,55 @@ async function main() {
     }
   });
 
+  const foundationLessons = [
+    {
+      slug: "arabic-script-basics",
+      title: "How Arabic writing works",
+      summary: "Learn the writing direction and recognize your first Arabic letters.",
+      objective: "Read from right to left and recognize ا ب ت ث.",
+      durationMin: 8,
+      position: -2,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "writing-direction", type: "reading", title: "Start from the right", items: [
+          { arabic: "العربية", transliteration: "al-arabiyya", english: "Arabic" },
+          { arabic: "ا", transliteration: "alif", english: "The letter alif" },
+          { arabic: "ب", transliteration: "ba", english: "The letter ba" },
+          { arabic: "ت", transliteration: "ta", english: "The letter ta" },
+          { arabic: "ث", transliteration: "tha", english: "The letter tha (th as in think)" }
+        ]},
+        { id: "direction-practice", type: "multiple-choice", title: "Check your understanding", prompt: "In which direction is Arabic normally written?", options: [
+          { id: "a", label: "Left to right" }, { id: "b", label: "Right to left" }, { id: "c", label: "Top to bottom" }
+        ], answer: "b", explanation: "Arabic text is normally written from right to left." }
+      ]}
+    },
+    {
+      slug: "first-arabic-words",
+      title: "Read your first Arabic words",
+      summary: "Read a few short words using familiar Arabic letters.",
+      objective: "Recognize باب, بيت, and بنت without vowel marks.",
+      durationMin: 8,
+      position: -1,
+      content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
+        { id: "first-words", type: "reading", title: "Read these words", items: [
+          { arabic: "باب", transliteration: "baab", english: "door" },
+          { arabic: "بيت", transliteration: "bayt", english: "house" },
+          { arabic: "بنت", transliteration: "bint", english: "girl" }
+        ]},
+        { id: "word-practice", type: "multiple-choice", title: "Check your reading", prompt: "What does بيت mean?", options: [
+          { id: "a", label: "Door" }, { id: "b", label: "House" }, { id: "c", label: "Girl" }
+        ], answer: "b", explanation: "بيت (bayt) means house." }
+      ]}
+    }
+  ];
+
+  for (const lessonData of foundationLessons) {
+    await prisma.lesson.upsert({
+      where: { levelId_slug: { levelId: level.id, slug: lessonData.slug } },
+      update: { ...lessonData, status: "PUBLISHED" },
+      create: { levelId: level.id, ...lessonData, status: "PUBLISHED" },
+    });
+  }
+
   const extraBeginnerLessons = [
     { slug: "where-are-you-from", title: "Where are you from?", summary: "Ask where someone is from and answer simply.", objective: "Ask and answer a question about a country.", durationMin: 7, position: 2,
       content: { version: 1, language: "ar", instructionLanguage: "en", sections: [
@@ -380,7 +429,7 @@ async function main() {
     });
   }
 
-  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and ten original Pre-A1 lessons.");
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and twelve original Pre-A1 lessons.");
 }
 
 main()
