@@ -22,7 +22,8 @@ UPDATE "User" SET "role" = 'ADMIN' WHERE "email" = 'admin@example.com';
 Replace the address with the exact verified operator email. Do not expose a public role-change endpoint.
 
 ## Required environment
-- `DATABASE_URL`: PostgreSQL connection string.
+- `DATABASE_URL`: pooled PostgreSQL connection string for runtime requests.
+- `DIRECT_URL`: direct, non-pooled PostgreSQL connection string used by Prisma migrations. For Neon, use its pooled URL for `DATABASE_URL` and direct URL for `DIRECT_URL`.
 - `BETTER_AUTH_SECRET`: unique high-entropy secret, at least 32 characters. Generate with `openssl rand -base64 32`.
 - `BETTER_AUTH_URL`: canonical public HTTPS URL of the deployed web app.
 - `EXPO_PUBLIC_API_URL`: canonical API origin used by the Android app.
