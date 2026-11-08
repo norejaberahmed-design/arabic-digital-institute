@@ -21,7 +21,7 @@ export default async function LessonsPage() {
     <main className="shell lessons-shell">
       <header className="topbar">
         <Link className="brand" href="/"><span className="brand-mark">ع</span><span>المعهد الرقمي</span></Link>
-        <Link className="language" href="/">الرئيسية</Link>
+        <div className="nav-actions"><Link className="language" href="/">الرئيسية</Link><Link className="language" href="/account">حساب الطالب</Link></div>
       </header>
       <section className="lessons-heading">
         <p className="section-kicker">PRE-A1 · BEGINNER</p>
