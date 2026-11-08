@@ -22,7 +22,7 @@ export async function GET() {
     if (!learner) return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     const progress = await prisma.lessonProgress.findMany({
       where: { learnerId: learner.id },
-      select: { lessonId: true, completed: true, lastPosition: true, completedAt: true, updatedAt: true },
+      select: { lessonId: true, completed: true, lastPosition: true, completedAt: true, updatedAt: true, lesson: { select: { slug: true, title: true, level: { select: { code: true } } } } },
       orderBy: { updatedAt: "desc" },
     });
     return NextResponse.json({ data: progress });
