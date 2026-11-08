@@ -45,7 +45,7 @@ Technology choices are subject to repository and compatibility review before imp
 ## Current implementation status
 
 - Public mobile-first web landing page and published-lesson catalog.
-- Ten original Pre-A1 lessons across greetings, names, countries, languages, numbers, family, cafe requests, and everyday expressions, backed by PostgreSQL/Prisma seed data.
+- Twelve original Pre-A1 lessons across greetings, names, countries, languages, numbers, family, cafe requests, and everyday expressions, backed by PostgreSQL/Prisma seed data.
 - Email/password learner account flow using Better Auth.
 - Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
 - Learner dashboard for saved lesson completion.
