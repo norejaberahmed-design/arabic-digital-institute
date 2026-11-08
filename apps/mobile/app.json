@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Arabic Digital Institute",
+    "slug": "arabic-digital-institute",
+    "scheme": "adi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true },
+    "android": { "package": "com.arabicdigitalinstitute.app" },
+    "ios": { "bundleIdentifier": "com.arabicdigitalinstitute.app" }
+  }
+}
