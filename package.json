@@ -1,0 +1,18 @@
+{
+  "name": "arabic-digital-institute",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --filter @adi/web dev",
+    "build": "pnpm --filter @adi/web build",
+    "lint": "pnpm --filter @adi/web lint",
+    "typecheck": "pnpm --filter @adi/web typecheck",
+    "db:generate": "pnpm --filter @adi/database db:generate",
+    "db:migrate": "pnpm --filter @adi/database db:migrate",
+    "db:studio": "pnpm --filter @adi/database db:studio"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
