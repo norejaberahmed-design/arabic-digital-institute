@@ -66,3 +66,42 @@ model Lesson {
   @@unique([levelId, slug])
   @@index([levelId, status, position])
 }
+
+model LearnerProfile {
+  id          String   @id @default(cuid())
+  authSubject String   @unique
+  displayName String?
+  interfaceLanguage String @default("en")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  progress    LessonProgress[]
+  attempts    ActivityAttempt[]
+}
+
+model LessonProgress {
+  id             String   @id @default(cuid())
+  learnerId      String
+  learner        LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+  lessonId       String
+  lesson         Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  completed      Boolean  @default(false)
+  lastPosition   Int      @default(0)
+  completedAt    DateTime?
+  updatedAt      DateTime @updatedAt
+  @@unique([learnerId, lessonId])
+  @@index([learnerId, updatedAt])
+}
+
+model ActivityAttempt {
+  id          String   @id @default(cuid())
+  learnerId   String
+  learner     LearnerProfile @relation(fields: [learnerId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  activityId  String
+  answer      Json
+  isCorrect   Boolean
+  feedback    String?
+  createdAt   DateTime @default(now())
+  @@index([learnerId, lessonId, createdAt])
+}
