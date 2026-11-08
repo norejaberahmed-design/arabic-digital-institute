@@ -1,7 +1,7 @@
 # Launch readiness checklist
 
 ## Current application capabilities
-- Public course landing page and published lesson catalog with ten original Pre-A1 lessons.
+- Public course landing page and published lesson catalog with twelve original Pre-A1 lessons.
 - Role-protected administrator content authoring and publishing screen/API.
 - Privacy and terms pages plus authenticated account deletion.
 - PostgreSQL/Prisma-backed published lesson content.
@@ -9,7 +9,7 @@
 - Authenticated lesson completion and quiz-attempt persistence.
 - Server-side quiz answer validation; public lesson responses omit answer keys.
 - Learner dashboard showing saved progress.
-- Android Expo SDK 58 client supports native registration/sign-in with secure session storage, lesson reading, quiz attempts, completion sync, learner progress dashboard, and account deletion.
+- Android Expo SDK 58 client supports native registration/sign-in with secure session storage, lesson reading, quiz attempts, completion sync, learner progress dashboard, account deletion, and device-native Arabic pronunciation playback.
 
 ## Initial administrator access
 
