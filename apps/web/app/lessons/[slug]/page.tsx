@@ -42,7 +42,7 @@ export default async function LessonPage({ params }: { params: Promise<{ slug: s
         <p>{lesson.summary}</p>
         <div className="lesson-meta">{lesson.durationMin} دقائق · {lesson.objective}</div>
       </section>
-      <LessonPlayer sections={content.sections ?? []} />
+      <LessonPlayer lessonSlug={lesson.slug} sections={(content.sections ?? []).map(({ answer, ...section }) => section)} />
     </main>
   );
 }
