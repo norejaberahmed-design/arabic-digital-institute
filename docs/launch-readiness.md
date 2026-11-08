@@ -1,13 +1,14 @@
 # Launch readiness checklist
 
 ## Current application capabilities
-- Public course landing page and lesson catalog.
+- Public course landing page and published lesson catalog with ten original Pre-A1 lessons.
+- Role-protected administrator content authoring and publishing screen/API.
 - PostgreSQL/Prisma-backed published lesson content.
 - Better Auth email/password registration, login, and logout.
 - Authenticated lesson completion and quiz-attempt persistence.
 - Server-side quiz answer validation; public lesson responses omit answer keys.
 - Learner dashboard showing saved progress.
-- Android Expo client can load the lesson catalog and read lesson content from the web API.
+- Android Expo client supports native registration/sign-in with secure session storage, lesson reading, quiz attempts, completion sync, and a learner progress dashboard.
 
 ## Initial administrator access
 
@@ -32,7 +33,7 @@ Never commit real secrets or production database URLs.
 2. Generate Prisma Client with `pnpm db:generate`.
 3. Review the schema change adding Better Auth tables and the learner-to-user relation.
 4. Apply the migration in the intended environment with `pnpm db:migrate`.
-5. Seed the sample course with `pnpm db:seed`.
+5. Seed all seven proficiency levels and ten original Pre-A1 lessons with `pnpm db:seed`.
 6. Verify `GET /api/health` returns `200` and `database: connected`.
 
 Do not run migrations against a production database until the target database and backup are confirmed.
@@ -44,15 +45,13 @@ Do not run migrations against a production database until the target database an
 - Test learner A cannot read or modify learner B's progress.
 - Test quiz answer keys are absent from public lesson API responses.
 - Test answer attempts and lesson completion survive logout/login.
-- Test mobile catalog and lesson reader on a physical Android phone.
+- Test the Android catalog, native sign-in, cookie restoration, quiz attempts, and progress dashboard on a physical device.
 - Configure HTTPS, domain, environment secrets, database backups, and error monitoring.
 - Promote the first administrator using the controlled SQL step above.
-- Test native Android sign-in, cookie restoration after app restart, quiz persistence, and lesson completion on a physical device.
+- Test administrator content creation, draft review, publishing, and role restrictions.
 - Add more original, reviewed lessons across the planned proficiency levels.
 
 ## Not yet included
-- Administrator CMS and role management.
-- Mobile account sign-in and progress synchronization.
 - Password reset and verified-email delivery.
 - Audio assets, speech recording, and AI tutor provider.
 - Full Pre-A1 through C2 content library.
