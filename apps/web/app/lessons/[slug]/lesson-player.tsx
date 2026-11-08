@@ -14,6 +14,15 @@ type Section = {
   explanation?: string;
 };
 
+function speakArabic(text: string) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ar";
+  utterance.rate = 0.88;
+  window.speechSynthesis.speak(utterance);
+}
+
 export default function LessonPlayer({ sections, lessonSlug }: { sections: Section[]; lessonSlug: string }) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState<Record<string, boolean>>({});
@@ -82,12 +91,13 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
           {section.lines?.map((line, index) => (
             <div className="dialogue-line" key={index}>
               <span className="speaker">{line.speaker}</span>
-              <div><strong lang="ar" dir="rtl">{line.arabic}</strong><span>{line.transliteration}</span><small>{line.english}</small></div>
+              <div><strong lang="ar" dir="rtl">{line.arabic}</strong><button className="speak-button" type="button" aria-label="Listen to Arabic" onClick={() => speakArabic(line.arabic)}>🔊</button><span>{line.transliteration}</span><small>{line.english}</small></div>
             </div>
           ))}
           {section.items?.map((item) => (
             <div className="vocab-row" key={item.arabic}>
               <strong lang="ar" dir="rtl">{item.arabic}</strong>
+              <button className="speak-button" type="button" aria-label="Listen to Arabic" onClick={() => speakArabic(item.arabic)}>🔊</button>
               <span>{item.transliteration}</span>
               <small>{item.english}</small>
             </div>
