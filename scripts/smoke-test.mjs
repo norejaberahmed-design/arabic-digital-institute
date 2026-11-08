@@ -61,7 +61,7 @@ async function main() {
   });
   if (anonymousWrite.status !== 401) throw new Error("Anonymous progress write was not rejected.");
 
-  const cookieOne = await signUp("learner-one@example.test", "Learner One");
+  const cookieOne = await signUp("learner-one@adi-test.com", "Learner One");
   const attemptResponse = await request("/api/progress", {
     method: "POST",
     headers: { "Content-Type": "application/json", Cookie: cookieOne },
@@ -84,7 +84,7 @@ async function main() {
     throw new Error("Learner progress was not persisted.");
   }
 
-  const cookieTwo = await signUp("learner-two@example.test", "Learner Two");
+  const cookieTwo = await signUp("learner-two@adi-test.com", "Learner Two");
   const isolatedResponse = await request("/api/progress", { headers: { Cookie: cookieTwo } });
   const isolated = await isolatedResponse.json();
   if (!isolatedResponse.ok || isolated.data.length !== 0) throw new Error("Learner data isolation check failed.");
