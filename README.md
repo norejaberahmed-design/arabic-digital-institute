@@ -49,7 +49,8 @@ Technology choices are subject to repository and compatibility review before imp
 - Email/password learner account flow using Better Auth.
 - Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
 - Learner dashboard for saved lesson completion.
-- Expo Android app with live lesson catalog and lesson reader (requires `EXPO_PUBLIC_API_URL`).
+- Role-protected admin lesson authoring and publishing screen/API.
+- Expo Android app with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, and completion sync (requires `EXPO_PUBLIC_API_URL`).
 - CI workflow for type checks and production build.
 
 This is an active launch candidate, not yet a public production release. Apply the Prisma migration, configure deployment secrets and a PostgreSQL database, verify CI and end-to-end account/progress flows, and complete the admin/content-management and mobile authentication work before announcing a full launch.
