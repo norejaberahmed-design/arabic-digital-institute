@@ -9,16 +9,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "expo": "~53.0.0",
-    "expo-router": "~5.1.0",
+    "expo": "~53.0.27",
+    "expo-router": "~5.1.7",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
-    "react-native": "0.79.2",
+    "react-native": "0.79.6",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "better-auth": "^1.7.18",
     "@better-auth/expo": "^1.7.18",
-    "expo-secure-store": "~14.2.3",
+    "expo-secure-store": "~14.2.4",
     "expo-network": "~7.1.5"
   },
   "devDependencies": {
