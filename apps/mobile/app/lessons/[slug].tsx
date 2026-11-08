@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Link, useLocalSearchParams } from "expo-router";
+import * as Speech from "expo-speech";
 import { apiGet, apiPost } from "../../lib/api";
 
 type Lesson = {
@@ -81,12 +82,12 @@ export default function LessonDetailScreen() {
         {lesson.content.sections?.map(section => <View key={section.id} style={styles.card}>
           <Text style={styles.sectionTitle}>{section.title}</Text>
           {section.lines?.map((line, i) => <View key={i} style={styles.word}>
-            <Text style={styles.arabic}>{line.arabic}</Text>
+            <View style={styles.arabicRow}><Text style={styles.arabic}>{line.arabic}</Text><Pressable onPress={() => Speech.speak(line.arabic, { language: "ar", rate: 0.88 })}><Text style={styles.speak}>🔊</Text></Pressable></View>
             <Text style={styles.translit}>{line.transliteration}</Text>
             <Text style={styles.muted}>{line.english}</Text>
           </View>)}
           {section.items?.map(item => <View key={item.arabic} style={styles.word}>
-            <Text style={styles.arabic}>{item.arabic}</Text>
+            <View style={styles.arabicRow}><Text style={styles.arabic}>{item.arabic}</Text><Pressable onPress={() => Speech.speak(item.arabic, { language: "ar", rate: 0.88 })}><Text style={styles.speak}>🔊</Text></Pressable></View>
             <Text style={styles.translit}>{item.transliteration}</Text>
             <Text style={styles.muted}>{item.english}</Text>
           </View>)}
@@ -121,7 +122,9 @@ const styles = StyleSheet.create({
   card: { backgroundColor: "#fff", borderColor: "#e7e6df", borderWidth: 1, borderRadius: 13, padding: 18, marginTop: 14 },
   sectionTitle: { color: "#173e33", fontSize: 18, fontWeight: "700", marginBottom: 10 },
   word: { paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#f0efe9" },
+  arabicRow: { flexDirection: "row", alignItems: "center", justifyContent: "flex-end", gap: 12 },
   arabic: { color: "#173e33", fontSize: 24, fontWeight: "700", textAlign: "right" },
+  speak: { color: "#245b49", fontSize: 18, padding: 4 },
   translit: { color: "#9a8358", fontSize: 13, marginTop: 2 },
   prompt: { color: "#173e33", fontWeight: "700", fontSize: 15, lineHeight: 24, marginTop: 10, marginBottom: 8 },
   option: { borderWidth: 1, borderColor: "#e7e6df", backgroundColor: "#fff", padding: 13, borderRadius: 8, marginTop: 7 },
