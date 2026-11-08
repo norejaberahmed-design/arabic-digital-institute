@@ -9,6 +9,16 @@
 - Learner dashboard showing saved progress.
 - Android Expo client can load the lesson catalog and read lesson content from the web API.
 
+## Initial administrator access
+
+New registrations receive the `LEARNER` role and cannot assign themselves administrator permissions. After the first trusted operator account is created, promote it manually in a controlled database session:
+
+```sql
+UPDATE "User" SET "role" = 'ADMIN' WHERE "email" = 'admin@example.com';
+```
+
+Replace the address with the exact verified operator email. Do not expose a public role-change endpoint.
+
 ## Required environment
 - `DATABASE_URL`: PostgreSQL connection string.
 - `BETTER_AUTH_SECRET`: unique high-entropy secret, at least 32 characters. Generate with `openssl rand -base64 32`.
