@@ -11,6 +11,8 @@ export default function AccountPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const { data: session, isPending } = authClient.useSession();
 
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -35,6 +37,21 @@ export default function AccountPage() {
     window.location.reload();
   }
 
+  async function deleteAccount() {
+    if (deleteConfirmation !== "DELETE" || busy) return;
+    setBusy(true);
+    setDeleteError("");
+    try {
+      const response = await fetch("/api/account", { method: "DELETE" });
+      if (!response.ok) throw new Error("تعذر حذف الحساب الآن. حاول مرة أخرى.");
+      window.location.href = "/";
+    } catch (reason) {
+      setDeleteError(reason instanceof Error ? reason.message : "تعذر حذف الحساب.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <main className="shell lessons-shell">
       <header className="topbar">
@@ -48,7 +65,14 @@ export default function AccountPage() {
             <h1>مرحباً، {session.user.name}</h1>
             <p className="muted">تم تسجيل الدخول بالحساب {session.user.email}</p>
             <button className="primary-action" type="button" onClick={signOut}>تسجيل الخروج</button>
-            <Link className="level-link back-link" href="/lessons">متابعة التعلم ←</Link>
+            <Link className="level-link back-link" href="/dashboard">لوحة التقدم ←</Link>
+            <section className="delete-account-panel">
+              <h2>حذف الحساب والبيانات</h2>
+              <p>سيؤدي هذا إلى حذف حسابك وجلسات الدخول وسجل التعلم ومحاولات الاختبارات المرتبطة به. لا يمكن التراجع عن هذا الإجراء.</p>
+              <label>اكتب DELETE للتأكيد<input value={deleteConfirmation} onChange={event => setDeleteConfirmation(event.target.value)} autoComplete="off" /></label>
+              <button className="danger-action" type="button" disabled={deleteConfirmation !== "DELETE" || busy} onClick={deleteAccount}>حذف الحساب نهائياً</button>
+              {deleteError && <p className="answer-feedback incorrect">{deleteError}</p>}
+            </section>
           </>
         ) : (
           <>
