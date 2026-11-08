@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: adi-arabic-institute-preview
+    name: adi-arabic-institute-preview-fzjr
     runtime: node
     plan: free
     region: frankfurt
-    branch: feature/launch-readiness-auth-progress
+    branch: main
     autoDeployTrigger: checksPass
     buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile && pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @adi/web build
     startCommand: pnpm --filter @adi/web start
@@ -20,4 +20,4 @@ services:
       - key: BETTER_AUTH_SECRET
         generateValue: true
       - key: BETTER_AUTH_URL
-        value: https://adi-arabic-institute-preview.onrender.com
+        value: https://adi-arabic-institute-preview-fzjr.onrender.com
