@@ -19,10 +19,11 @@ export default function LessonDetailScreen() {
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState("");
-  const [feedback, setFeedback] = useState("");
-  const [correct, setCorrect] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [feedback, setFeedback] = useState<Record<string, string>>({});
+  const [correct, setCorrect] = useState<Record<string, boolean>>({});
+  const [busyActivity, setBusyActivity] = useState("");
+  const [notice, setNotice] = useState("");
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
@@ -36,33 +37,34 @@ export default function LessonDetailScreen() {
   }, [slug]);
 
   async function submitAnswer(activityId: string) {
-    if (!selected || typeof slug !== "string" || busy) return;
-    setBusy(true);
-    setFeedback("");
+    if (!answers[activityId] || typeof slug !== "string" || busyActivity) return;
+    setBusyActivity(activityId);
+    setNotice("");
     try {
       const result = await apiPost<{ data: { isCorrect: boolean; explanation?: string } }>("/api/progress", {
-        action: "attempt", lessonSlug: slug, activityId, answer: selected,
+        action: "attempt", lessonSlug: slug, activityId, answer: answers[activityId],
       });
-      setCorrect(result.data.isCorrect);
-      setFeedback(result.data.isCorrect ? "إجابة صحيحة! أحسنت. " + (result.data.explanation || "") : "حاول مرة أخرى. " + (result.data.explanation || ""));
+      setCorrect(current => ({ ...current, [activityId]: result.data.isCorrect }));
+      setFeedback(current => ({ ...current, [activityId]: result.data.isCorrect ? "إجابة صحيحة! أحسنت. " + (result.data.explanation || "") : "حاول مرة أخرى. " + (result.data.explanation || "") }));
     } catch (reason) {
-      setFeedback(reason instanceof Error ? reason.message : "تعذر حفظ الإجابة.");
+      setNotice(reason instanceof Error ? reason.message : "تعذر حفظ الإجابة.");
     } finally {
-      setBusy(false);
+      setBusyActivity("");
     }
   }
 
   async function finishLesson() {
-    if (typeof slug !== "string" || busy) return;
-    setBusy(true);
+    if (typeof slug !== "string" || busyActivity) return;
+    setBusyActivity("complete");
+    setNotice("");
     try {
       await apiPost("/api/progress", { action: "complete", lessonSlug: slug });
       setCompleted(true);
-      setFeedback("تم حفظ إكمال الدرس في حسابك.");
+      setNotice("تم حفظ إكمال الدرس في حسابك.");
     } catch (reason) {
-      setFeedback(reason instanceof Error ? reason.message : "تعذر حفظ التقدم.");
+      setNotice(reason instanceof Error ? reason.message : "تعذر حفظ التقدم.");
     } finally {
-      setBusy(false);
+      setBusyActivity("");
     }
   }
 
@@ -90,14 +92,18 @@ export default function LessonDetailScreen() {
           </View>)}
           {section.prompt && <>
             <Text style={styles.prompt}>{section.prompt}</Text>
-            {section.options?.map(option => <Pressable key={option.id} onPress={() => { setSelected(option.id); setFeedback(""); }} style={[styles.option, selected === option.id && styles.optionSelected]}>
+            {section.options?.map(option => <Pressable key={option.id} onPress={() => {
+              setAnswers(current => ({ ...current, [section.id]: option.id }));
+              setFeedback(current => ({ ...current, [section.id]: "" }));
+            }} style={[styles.option, answers[section.id] === option.id && styles.optionSelected]}>
               <Text style={styles.optionText}>{option.label}</Text>
             </Pressable>)}
-            <Pressable style={styles.button} disabled={!selected || busy} onPress={() => submitAnswer(section.id)}><Text style={styles.buttonText}>{busy ? "جارٍ التحقق..." : "تحقق واحفظ الإجابة"}</Text></Pressable>
+            <Pressable style={styles.button} disabled={!answers[section.id] || busyActivity !== ""} onPress={() => submitAnswer(section.id)}><Text style={styles.buttonText}>{busyActivity === section.id ? "جارٍ التحقق..." : "تحقق واحفظ الإجابة"}</Text></Pressable>
+            {!!feedback[section.id] && <Text style={correct[section.id] ? styles.success : styles.error}>{feedback[section.id]}</Text>}
           </>}
         </View>)}
-        {!!feedback && <Text style={correct ? styles.success : styles.error}>{feedback}</Text>}
-        <Pressable style={[styles.button, completed && styles.done]} disabled={busy || completed} onPress={finishLesson}><Text style={styles.buttonText}>{completed ? "اكتمل الدرس" : "إنهاء الدرس وحفظ التقدم"}</Text></Pressable>
+        {!!notice && <Text style={completed ? styles.success : styles.error}>{notice}</Text>}
+        <Pressable style={[styles.button, completed && styles.done]} disabled={busyActivity !== "" || completed} onPress={finishLesson}><Text style={styles.buttonText}>{completed ? "اكتمل الدرس" : busyActivity === "complete" ? "جارٍ الحفظ..." : "إنهاء الدرس وحفظ التقدم"}</Text></Pressable>
         <Link href="/account" style={styles.accountLink}>إدارة الحساب / تسجيل الدخول</Link>
       </>}
     </ScrollView>
