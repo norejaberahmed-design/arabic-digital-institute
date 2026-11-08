@@ -29,3 +29,5 @@ jobs:
         run: pnpm typecheck
       - name: Typecheck mobile app
         run: pnpm typecheck:mobile
+      - name: Build web app
+        run: pnpm build
