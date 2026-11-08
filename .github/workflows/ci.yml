@@ -29,4 +29,8 @@ jobs:
       - name: Typecheck mobile app
         run: pnpm typecheck:mobile
       - name: Build web app
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/adi_ci
+          BETTER_AUTH_SECRET: ci-only-secret-not-used-in-production-000000000000
+          BETTER_AUTH_URL: http://localhost:3000
         run: pnpm build
