@@ -10,7 +10,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://arabic-digital-institute-preview.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://adi-arabic-institute-preview.onrender.com"
       }
     },
     "production": {
@@ -18,7 +18,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://arabic-digital-institute-preview.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://adi-arabic-institute-preview.onrender.com"
       }
     }
   }
