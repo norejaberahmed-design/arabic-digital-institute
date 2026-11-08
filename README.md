@@ -45,12 +45,12 @@ Technology choices are subject to repository and compatibility review before imp
 ## Current implementation status
 
 - Public mobile-first web landing page and published-lesson catalog.
-- Pre-A1 sample lesson backed by PostgreSQL/Prisma seed data.
+- Ten original Pre-A1 lessons across greetings, names, countries, languages, numbers, family, cafe requests, and everyday expressions, backed by PostgreSQL/Prisma seed data.
 - Email/password learner account flow using Better Auth.
 - Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
 - Learner dashboard for saved lesson completion.
 - Role-protected admin lesson authoring and publishing screen/API.
-- Expo Android app with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, and completion sync (requires `EXPO_PUBLIC_API_URL`).
+- Expo Android app with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, completion sync, and learner progress dashboard (requires `EXPO_PUBLIC_API_URL`).
 - CI workflow for type checks and production build.
 
 This is an active launch candidate, not yet a public production release. Apply the Prisma migration, configure deployment secrets and a PostgreSQL database, verify CI and end-to-end account/progress flows, and complete the admin/content-management and mobile authentication work before announcing a full launch.
