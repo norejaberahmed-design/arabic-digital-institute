@@ -92,7 +92,12 @@ async function main() {
   const adminResponse = await request("/api/admin/lessons", { headers: { Cookie: cookieOne } });
   if (adminResponse.status !== 403) throw new Error("Learner account unexpectedly accessed admin API.");
 
-  console.log("PASS: health, public lessons, answer-key privacy, auth, quiz attempts, progress persistence, tenant isolation, and admin authorization.");
+  const deleteResponse = await request("/api/account", { method: "DELETE", headers: { Cookie: cookieTwo } });
+  if (!deleteResponse.ok) throw new Error("Authenticated account deletion failed.");
+  const afterDelete = await request("/api/progress", { headers: { Cookie: cookieTwo } });
+  if (afterDelete.status !== 401) throw new Error("Deleted account session remained active.");
+
+  console.log("PASS: health, lessons, answer-key privacy, authentication, quiz attempts, progress persistence, tenant isolation, admin authorization, and account deletion.");
 }
 
 main().catch(error => {
