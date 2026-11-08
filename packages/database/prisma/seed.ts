@@ -27,6 +27,23 @@ async function main() {
     },
   });
 
+  const remainingLevels = [
+    { code: ProficiencyLevel.A1, title: "Everyday Arabic", description: "Family, food, time, routines, and places.", position: 1 },
+    { code: ProficiencyLevel.A2, title: "Independent communication", description: "Work, travel, health, plans, and messages.", position: 2 },
+    { code: ProficiencyLevel.B1, title: "Stories and opinions", description: "Experiences, problems, opinions, and everyday texts.", position: 3 },
+    { code: ProficiencyLevel.B2, title: "Confident communication", description: "Discussion, media, current topics, and professional communication.", position: 4 },
+    { code: ProficiencyLevel.C1, title: "Advanced Arabic", description: "Academic and professional discourse, reports, and argumentation.", position: 5 },
+    { code: ProficiencyLevel.C2, title: "Mastery", description: "Nuance, precision, and advanced communication.", position: 6 },
+  ];
+
+  for (const item of remainingLevels) {
+    await prisma.level.upsert({
+      where: { courseId_code: { courseId: course.id, code: item.code } },
+      update: { title: item.title, description: item.description, position: item.position },
+      create: { courseId: course.id, ...item },
+    });
+  }
+
   await prisma.lesson.upsert({
     where: { levelId_slug: { levelId: level.id, slug: "first-greeting" } },
     update: {
@@ -127,7 +144,107 @@ async function main() {
     }
   });
 
-  console.log("Seeded course, Pre-A1 level, and first published lesson.");
+  await prisma.lesson.upsert({
+    where: { levelId_slug: { levelId: level.id, slug: "introduce-yourself" } },
+    update: {
+      title: "Introduce yourself",
+      summary: "Ask someone's name and introduce yourself.",
+      objective: "Ask and answer a simple question about names.",
+      durationMin: 8,
+      status: "PUBLISHED",
+      position: 1,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        sections: [
+          {
+            id: "dialogue",
+            type: "dialogue",
+            title: "Meeting someone",
+            lines: [
+              { speaker: "A", arabic: "ما اسمك؟", transliteration: "ma ismuk?", english: "What is your name?" },
+              { speaker: "B", arabic: "اسمي سارة", transliteration: "ismi Sarah", english: "My name is Sarah." }
+            ]
+          },
+          {
+            id: "vocabulary",
+            type: "vocabulary",
+            title: "Useful expressions",
+            items: [
+              { arabic: "اسم", transliteration: "ism", english: "name" },
+              { arabic: "ما", transliteration: "ma", english: "what" },
+              { arabic: "اسمي", transliteration: "ismi", english: "my name" }
+            ]
+          },
+          {
+            id: "practice-name",
+            type: "multiple-choice",
+            title: "Check your understanding",
+            prompt: "How do you say “My name is…”?",
+            options: [
+              { id: "a", label: "ما اسمك؟" },
+              { id: "b", label: "اسمي ..." },
+              { id: "c", label: "شكرا" }
+            ],
+            answer: "b",
+            explanation: "اسمي (ismi) means “my name”."
+          }
+        ]
+      }
+    },
+    create: {
+      levelId: level.id,
+      slug: "introduce-yourself",
+      title: "Introduce yourself",
+      summary: "Ask someone's name and introduce yourself.",
+      objective: "Ask and answer a simple question about names.",
+      durationMin: 8,
+      status: "PUBLISHED",
+      position: 1,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        sections: [
+          {
+            id: "dialogue",
+            type: "dialogue",
+            title: "Meeting someone",
+            lines: [
+              { speaker: "A", arabic: "ما اسمك؟", transliteration: "ma ismuk?", english: "What is your name?" },
+              { speaker: "B", arabic: "اسمي سارة", transliteration: "ismi Sarah", english: "My name is Sarah." }
+            ]
+          },
+          {
+            id: "vocabulary",
+            type: "vocabulary",
+            title: "Useful expressions",
+            items: [
+              { arabic: "اسم", transliteration: "ism", english: "name" },
+              { arabic: "ما", transliteration: "ma", english: "what" },
+              { arabic: "اسمي", transliteration: "ismi", english: "my name" }
+            ]
+          },
+          {
+            id: "practice-name",
+            type: "multiple-choice",
+            title: "Check your understanding",
+            prompt: "How do you say “My name is…”?",
+            options: [
+              { id: "a", label: "ما اسمك؟" },
+              { id: "b", label: "اسمي ..." },
+              { id: "c", label: "شكرا" }
+            ],
+            answer: "b",
+            explanation: "اسمي (ismi) means “my name”."
+          }
+        ]
+      }
+    }
+  });
+
+  console.log("Seeded the contemporary Arabic course, seven CEFR-aligned levels, and two Pre-A1 lessons.");
 }
 
 main()
