@@ -14,6 +14,25 @@ async function requireAdmin() {
   return { userId: session.user.id };
 }
 
+function isValidLessonContent(value: unknown): value is Prisma.InputJsonValue {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const sections = (value as Record<string, unknown>).sections;
+  if (!Array.isArray(sections) || sections.length === 0 || sections.length > 50) return false;
+  return sections.every((section) => {
+    if (!section || typeof section !== "object" || Array.isArray(section)) return false;
+    const item = section as Record<string, unknown>;
+    if (typeof item.id !== "string" || item.id.length === 0 || item.id.length > 120 ||
+        typeof item.title !== "string" || item.title.length === 0 || item.title.length > 180 ||
+        !["dialogue", "vocabulary", "multiple-choice", "reading", "writing"].includes(String(item.type))) return false;
+    if (item.type === "multiple-choice") {
+      if (typeof item.answer !== "string" || !Array.isArray(item.options) || item.options.length < 2 || item.options.length > 8) return false;
+      return item.options.some(option => option && typeof option === "object" &&
+        (option as Record<string, unknown>).id === item.answer);
+    }
+    return true;
+  });
+}
+
 export async function GET() {
   try {
     const access = await requireAdmin();
@@ -48,13 +67,13 @@ export async function POST(request: Request) {
         !title || title.length > 160 || !levelId || !summary || summary.length > 500 ||
         !objective || objective.length > 500 || typeof durationMin !== "number" ||
         !Number.isInteger(durationMin) || durationMin < 1 || durationMin > 180 ||
-        !input.content || typeof input.content !== "object" || Array.isArray(input.content)) {
+        !isValidLessonContent(input.content)) {
       return NextResponse.json({ error: "INVALID_LESSON_DATA" }, { status: 400 });
     }
     const level = await prisma.level.findUnique({ where: { id: levelId }, select: { id: true } });
     if (!level) return NextResponse.json({ error: "LEVEL_NOT_FOUND" }, { status: 404 });
     const lesson = await prisma.lesson.create({
-      data: { levelId, slug, title, summary, objective, durationMin, position: 0, status: "DRAFT", content: input.content as Prisma.InputJsonValue },
+      data: { levelId, slug, title, summary, objective, durationMin, position: 0, status: "DRAFT", content: input.content },
       select: { id: true, slug: true, title: true, status: true },
     });
     return NextResponse.json({ data: lesson }, { status: 201 });
