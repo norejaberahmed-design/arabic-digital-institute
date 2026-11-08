@@ -30,6 +30,17 @@ Replace the address with the exact verified operator email. Do not expose a publ
 
 Never commit real secrets or production database URLs.
 
+## Preview deployment
+
+1. Create a Neon PostgreSQL project in Frankfurt on the Free plan.
+2. Set the pooled connection string as `DATABASE_URL` and the direct connection string as `DIRECT_URL`.
+3. Connect the GitHub repository to Render and create a Blueprint from the root `render.yaml` on the preview branch.
+4. Review the proposed service. The Blueprint requests one Free web service in Frankfurt; it does not create a Render Postgres database. Render generates `BETTER_AUTH_SECRET`; enter the two Neon connection strings as secret values.
+5. The build applies Prisma migrations; the first successful deploy seeds the course.
+6. After the web service is live, run `eas build --platform android --profile preview` from the Expo/EAS account to create an installable APK.
+
+This is a public preview configuration, not production hosting. The free Render service sleeps after 15 minutes idle and can take about a minute to wake. Use a paid always-on service and production-grade database/backups before a commercial launch.
+
 ## Database setup
 1. Install dependencies with `pnpm install`.
 2. Generate Prisma Client with `pnpm db:generate`.
