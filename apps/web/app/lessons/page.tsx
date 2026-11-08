@@ -5,7 +5,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function LessonsPage() {
-  let lessons: Awaited<ReturnType<typeof prisma.lesson.findMany>> = [];
+  type LessonCard = { id: string; slug: string; title: string; summary: string; objective: string; durationMin: number; level: { code: string; title: string } };
+  let lessons: LessonCard[] = [];
   let unavailable = false;
   try {
     lessons = await prisma.lesson.findMany({
