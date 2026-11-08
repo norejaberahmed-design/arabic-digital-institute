@@ -45,7 +45,7 @@ async function main() {
   const listResponse = await request("/api/lessons");
   if (!listResponse.ok) throw new Error("Published lesson list is unavailable.");
   const list = await listResponse.json();
-  if (!Array.isArray(list.data) || list.data.length < 2) throw new Error("Expected at least two seeded Pre-A1 lessons.");
+  if (!Array.isArray(list.data) || list.data.length < 12) throw new Error("Expected twelve seeded Pre-A1 lessons.");
 
   const lessonResponse = await request("/api/lessons/first-greeting");
   if (!lessonResponse.ok) throw new Error("Public lesson endpoint failed.");
