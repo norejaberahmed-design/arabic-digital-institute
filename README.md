@@ -53,7 +53,7 @@ Technology choices are subject to repository and compatibility review before imp
 - Expo Android app with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, completion sync, and learner progress dashboard (requires `EXPO_PUBLIC_API_URL`).
 - CI workflow for type checks and production build.
 
-This is an active launch candidate, not yet a public production release. Apply the Prisma migration, configure deployment secrets and a PostgreSQL database, verify CI and end-to-end account/progress flows, and complete the admin/content-management and mobile authentication work before announcing a full launch.
+This is an active launch candidate, not yet a public production release. Remaining release gates: connect a persistent PostgreSQL database, configure deployment secrets and HTTPS hosting, obtain passing CI and smoke-test results, verify the Android app on a physical device, and finish password recovery/email verification, audio/speaking, and the next curriculum levels. The administrator console and native learner sign-in/progress flows are implemented in this branch.
 
 ## Scope disclaimer
 
