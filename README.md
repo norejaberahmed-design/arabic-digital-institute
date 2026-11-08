@@ -42,9 +42,17 @@ Technology choices are subject to repository and compatibility review before imp
 - Keep secrets out of source control.
 - Do not reset or destructively migrate production data without explicit approval.
 
-## Development status
+## Current implementation status
 
-This repository is being initialized. Architecture, curriculum, product requirements, and implementation milestones will be documented before expanding the application.
+- Public mobile-first web landing page and published-lesson catalog.
+- Pre-A1 sample lesson backed by PostgreSQL/Prisma seed data.
+- Email/password learner account flow using Better Auth.
+- Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
+- Learner dashboard for saved lesson completion.
+- Expo Android app with live lesson catalog and lesson reader (requires `EXPO_PUBLIC_API_URL`).
+- CI workflow for type checks and production build.
+
+This is an active launch candidate, not yet a public production release. Apply the Prisma migration, configure deployment secrets and a PostgreSQL database, verify CI and end-to-end account/progress flows, and complete the admin/content-management and mobile authentication work before announcing a full launch.
 
 ## Scope disclaimer
 
