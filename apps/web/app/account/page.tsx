@@ -22,7 +22,7 @@ export default function AccountPage() {
         ? await authClient.signUp.email({ name: name.trim(), email: email.trim(), password })
         : await authClient.signIn.email({ email: email.trim(), password });
       if (result.error) setMessage(result.error.message || "تعذر إكمال العملية. تحقق من البيانات وحاول مجدداً.");
-      else window.location.href = "/lessons";
+      else window.location.href = "/dashboard";
     } catch {
       setMessage("تعذر الاتصال بالخادم. تأكد من إعداد قاعدة البيانات ثم حاول مجدداً.");
     } finally {
