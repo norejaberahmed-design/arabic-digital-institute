@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: arabic-digital-institute-preview
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: feature/launch-readiness-auth-progress
+    autoDeployTrigger: checksPass
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile && pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @adi/web build
+    startCommand: pnpm --filter @adi/web start
+    initialDeployHook: pnpm db:seed
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.23.4
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: BETTER_AUTH_URL
+        value: https://arabic-digital-institute-preview.onrender.com
