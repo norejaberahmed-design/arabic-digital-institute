@@ -30,3 +30,18 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   }
   return result as T;
 }
+
+export async function apiGetAuthenticated<T>(path: string): Promise<T> {
+  if (!apiBaseUrl) throw new Error("أضف EXPO_PUBLIC_API_URL إلى إعدادات تطبيق الهاتف.");
+  const cookie = await authClient.getCookie();
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    headers: cookie ? { Cookie: cookie } : {},
+    credentials: "omit",
+  });
+  const result = await response.json().catch(() => ({})) as { error?: string };
+  if (!response.ok) {
+    if (response.status === 401) throw new Error("سجّل الدخول أولاً لعرض تقدمك.");
+    throw new Error(result.error || "تعذر تحميل البيانات.");
+  }
+  return result as T;
+}
