@@ -8,3 +8,24 @@ export async function apiGet<T>(path: string): Promise<T> {
   if (!response.ok) throw new Error(response.status === 503 ? "الخادم أو قاعدة البيانات غير جاهزين." : "تعذر تحميل البيانات.");
   return response.json() as Promise<T>;
 }
+
+export async function apiPost<T>(path: string, body: unknown): Promise<T> {
+  if (!apiBaseUrl) throw new Error("أضف EXPO_PUBLIC_API_URL إلى إعدادات تطبيق الهاتف.");
+  const { authClient } = await import("./auth-client");
+  const cookie = await authClient.getCookie();
+  const response = await fetch(`${apiBaseUrl}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(cookie ? { Cookie: cookie } : {}),
+    },
+    credentials: "omit",
+    body: JSON.stringify(body),
+  });
+  const result = await response.json().catch(() => ({})) as { error?: string };
+  if (!response.ok) {
+    if (response.status === 401) throw new Error("سجّل الدخول أولاً حتى نحفظ تقدمك.");
+    throw new Error(result.error || "تعذر حفظ البيانات.");
+  }
+  return result as T;
+}
