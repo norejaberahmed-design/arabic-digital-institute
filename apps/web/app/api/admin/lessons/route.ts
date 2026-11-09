@@ -18,17 +18,76 @@ function isValidLessonContent(value: unknown): value is Prisma.InputJsonValue {
   if (!value || typeof value !== "object" || Array.isArray(value)) return false;
   const sections = (value as Record<string, unknown>).sections;
   if (!Array.isArray(sections) || sections.length === 0 || sections.length > 50) return false;
+
   return sections.every((section) => {
     if (!section || typeof section !== "object" || Array.isArray(section)) return false;
     const item = section as Record<string, unknown>;
+    const supportedTypes = ["dialogue", "vocabulary", "multiple-choice", "reading", "writing", "letter-studio", "text-input"];
     if (typeof item.id !== "string" || item.id.length === 0 || item.id.length > 120 ||
         typeof item.title !== "string" || item.title.length === 0 || item.title.length > 180 ||
-        !["dialogue", "vocabulary", "multiple-choice", "reading", "writing"].includes(String(item.type))) return false;
+        !supportedTypes.includes(String(item.type))) return false;
+
     if (item.type === "multiple-choice") {
-      if (typeof item.answer !== "string" || !Array.isArray(item.options) || item.options.length < 2 || item.options.length > 8) return false;
-      return item.options.some(option => option && typeof option === "object" &&
-        (option as Record<string, unknown>).id === item.answer);
+      if (typeof item.prompt !== "string" || item.prompt.length === 0 || item.prompt.length > 1000 ||
+          typeof item.answer !== "string" || !Array.isArray(item.options) ||
+          item.options.length < 2 || item.options.length > 8) return false;
+      const optionIds = item.options.map(option =>
+        option && typeof option === "object" ? (option as Record<string, unknown>).id : undefined
+      );
+      return optionIds.every(id => typeof id === "string") &&
+        new Set(optionIds).size === optionIds.length && optionIds.includes(item.answer) &&
+        item.options.every(option => {
+          if (!option || typeof option !== "object") return false;
+          const candidate = option as Record<string, unknown>;
+          return typeof candidate.label === "string" && candidate.label.length > 0 && candidate.label.length <= 300;
+        });
     }
+
+    if (item.type === "text-input") {
+      return typeof item.prompt === "string" && item.prompt.length > 0 && item.prompt.length <= 1000 &&
+        typeof item.answer === "string" && item.answer.length > 0 && item.answer.length <= 200 &&
+        (item.inputTools === undefined || (Array.isArray(item.inputTools) &&
+          item.inputTools.length <= 40 && item.inputTools.every(token => typeof token === "string" && token.length <= 12)));
+    }
+
+    if (item.type === "letter-studio") {
+      return Array.isArray(item.letters) && item.letters.length > 0 && item.letters.length <= 40 &&
+        item.letters.every(letter => {
+          if (!letter || typeof letter !== "object") return false;
+          const candidate = letter as Record<string, unknown>;
+          return ["char", "name", "sound", "example", "meaning", "note"].every(key =>
+            typeof candidate[key] === "string" && (candidate[key] as string).length > 0 && (candidate[key] as string).length <= 300
+          ) && Array.isArray(candidate.forms) && candidate.forms.length === 4 &&
+            candidate.forms.every(form => typeof form === "string" && form.length <= 20);
+        });
+    }
+
+    if (item.type === "dialogue") {
+      return Array.isArray(item.lines) && item.lines.length > 0 && item.lines.length <= 50 &&
+        item.lines.every(line => {
+          if (!line || typeof line !== "object") return false;
+          const candidate = line as Record<string, unknown>;
+          return ["speaker", "arabic", "transliteration", "english"].every(key =>
+            typeof candidate[key] === "string" && (candidate[key] as string).length > 0 && (candidate[key] as string).length <= 500
+          );
+        });
+    }
+
+    if (item.type === "vocabulary" || item.type === "reading") {
+      return Array.isArray(item.items) && item.items.length > 0 && item.items.length <= 100 &&
+        item.items.every(entry => {
+          if (!entry || typeof entry !== "object") return false;
+          const candidate = entry as Record<string, unknown>;
+          return ["arabic", "transliteration", "english"].every(key =>
+            typeof candidate[key] === "string" && (candidate[key] as string).length > 0 && (candidate[key] as string).length <= 500
+          );
+        });
+    }
+
+    if (item.type === "writing") {
+      return typeof item.prompt === "string" && item.prompt.length > 0 && item.prompt.length <= 1000;
+    }
+
     return true;
   });
 }
