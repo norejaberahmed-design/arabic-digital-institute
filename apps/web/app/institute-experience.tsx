@@ -31,6 +31,7 @@ export default function InstituteExperience() {
           <span><strong>المعهد الرقمي</strong><small>ARABIC DIGITAL INSTITUTE</small></span>
         </Link>
         <nav className="world-nav" aria-label="التنقل الرئيسي">
+          <Link href="/alphabet">الأبجدية</Link>
           <Link href="/lessons">الدروس</Link>
           <Link href="/account">حساب الطالب</Link>
         </nav>
@@ -103,7 +104,7 @@ export default function InstituteExperience() {
       <section className="world-journey">
         <div className="journey-heading"><span>رحلتك داخل المعهد</span><h2>كل مهارة لها مساحة.</h2><p>ابدأ من الحروف، ثم انتقل إلى الكلمات والمحادثات والحياة اليومية.</p></div>
         <div className="journey-grid">
-          <Link href="/lessons" className="journey-card card-letters"><span className="journey-number">01</span><div className="journey-3d-letter">ب</div><strong>عالم الحروف</strong><small>تعرّف على أشكال الحروف وأصواتها</small><b>استكشف ←</b></Link>
+          <Link href="/alphabet" className="journey-card card-letters"><span className="journey-number">01</span><div className="journey-3d-letter">ب</div><strong>عالم الحروف</strong><small>تعرّف على أشكال الحروف وأصواتها</small><b>استكشف ←</b></Link>
           <Link href="/lessons" className="journey-card card-class"><span className="journey-number">02</span><div className="journey-3d-book">▤</div><strong>الفصول والدروس</strong><small>تعلم من خلال مواقف واقعية قصيرة</small><b>ادخل الفصل ←</b></Link>
           <Link href="/lessons" className="journey-card card-speak"><span className="journey-number">03</span><div className="journey-3d-sound">◖</div><strong>استمع وتحدث</strong><small>استمع وكرّر الكلمات بصوتك</small><b>تدرّب الآن ←</b></Link>
         </div>
