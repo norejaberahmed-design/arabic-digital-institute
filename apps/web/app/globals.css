@@ -137,3 +137,10 @@ a{color:inherit;text-decoration:none}
 
 .speak-button{display:inline-flex;border:0;background:#edf2ec;color:var(--olive);border-radius:7px;padding:4px 8px;margin-inline-start:8px;cursor:pointer;font-size:13px}
 .speak-button:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+
+
+.speech-practice{margin-top:8px;display:grid;gap:5px}
+.speech-practice-button{justify-self:start;border:1px solid #cbd8cc;background:#f2f6f1;color:var(--olive-dark);border-radius:8px;padding:8px 11px;font:inherit;font-size:12px;cursor:pointer}
+.speech-practice-button:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.speech-feedback,.speech-heard{font-size:12px;line-height:1.8;color:var(--muted);margin:0}
+.speech-success{color:#245b49;background:#e7f2e8;border-radius:7px;padding:7px}

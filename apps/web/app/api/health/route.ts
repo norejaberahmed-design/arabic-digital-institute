@@ -10,7 +10,7 @@ export async function GET() {
     return NextResponse.json({ status: "ok", database: "connected" });
   } catch {
     return NextResponse.json(
-      { status: "degraded", database: "unavailable", message: "Configure DATABASE_URL and apply migrations." },
+      { status: "degraded", database: "unavailable", message: "Check DATABASE_URL and SQLite initialization." },
       { status: 503 },
     );
   }
