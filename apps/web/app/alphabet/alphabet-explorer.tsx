@@ -75,12 +75,12 @@ export default function AlphabetExplorer() {
     );
   }, [query]);
 
-  const correctChoice = current.medial;
   const quizOptions = [
-    { value: current.initial, label: "بداية الكلمة" },
-    { value: correctChoice, label: "وسط الكلمة" },
-    { value: current.final, label: "نهاية الكلمة" },
-  ];
+    { value: current.isolated, label: "منفصل" },
+    { value: current.initial, label: "أول الكلمة" },
+    { value: current.medial, label: current.joinsNext ? "وسط الكلمة" : "وسط / آخر الكلمة" },
+    { value: current.final, label: "آخر الكلمة" },
+  ].filter((option, index, all) => all.findIndex((candidate) => candidate.value === option.value) === index);
 
   function selectLetter(char: string) {
     setSelectedChar(char);
@@ -191,7 +191,7 @@ export default function AlphabetExplorer() {
               <button className="letter-practice-start" type="button" onClick={() => setShowQuiz(true)}>ابدأ التدريب <span>←</span></button>
             ) : (
               <div className="letter-quiz">
-                <p>أي شكل يظهر عندما يأتي حرف <strong>{current.char}</strong> في وسط الكلمة؟</p>
+                <p>اختر الشكل الذي يظهر لحرف <strong>{current.char}</strong> في وسط الكلمة.</p>
                 <div className="letter-quiz-options" dir="rtl">
                   {quizOptions.map((option) => (
                     <button key={option.label} type="button" className={quizChoice === option.label ? "chosen" : ""} onClick={() => { setQuizChoice(option.label); setQuizChecked(false); }}>
@@ -200,7 +200,7 @@ export default function AlphabetExplorer() {
                   ))}
                 </div>
                 <button className="letter-quiz-check" type="button" disabled={!quizChoice} onClick={() => setQuizChecked(true)}>تحقق من الإجابة</button>
-                {quizChecked && <p className={quizChoice === "وسط الكلمة" ? "letter-quiz-feedback good" : "letter-quiz-feedback retry"}>{quizChoice === "وسط الكلمة" ? "أحسنت! هذا هو شكل الحرف في وسط الكلمة." : "حاول مرة أخرى. ابحث عن الشكل المتصل من الجانبين عندما يسمح الحرف بذلك."}</p>}
+                {quizChecked && <p className={quizChoice === current.medial ? "letter-quiz-feedback good" : "letter-quiz-feedback retry"}>{quizChoice === current.medial ? (current.joinsNext ? "أحسنت! هذا هو شكل الحرف في وسط الكلمة." : "أحسنت! هذا الحرف لا يتصل بما بعده، لذلك يتشابه شكله في الوسط والنهاية.") : "حاول مرة أخرى. ابحث عن الشكل الذي يسبق الحرف ويتصل به من اليمين."}</p>}
               </div>
             )}
           </section>
