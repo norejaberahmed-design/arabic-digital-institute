@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SpeechPractice from "./speech-practice";
 
 type Section = {
   id: string;
@@ -91,7 +92,7 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
           {section.lines?.map((line, index) => (
             <div className="dialogue-line" key={index}>
               <span className="speaker">{line.speaker}</span>
-              <div><strong lang="ar" dir="rtl">{line.arabic}</strong><button className="speak-button" type="button" aria-label="Listen to Arabic" onClick={() => speakArabic(line.arabic)}>🔊</button><span>{line.transliteration}</span><small>{line.english}</small></div>
+              <div><strong lang="ar" dir="rtl">{line.arabic}</strong><button className="speak-button" type="button" aria-label="Listen to Arabic" onClick={() => speakArabic(line.arabic)}>🔊</button><span>{line.transliteration}</span><small>{line.english}</small><SpeechPractice target={line.arabic} /></div>
             </div>
           ))}
           {section.items?.map((item) => (
@@ -99,7 +100,7 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
               <strong lang="ar" dir="rtl">{item.arabic}</strong>
               <button className="speak-button" type="button" aria-label="Listen to Arabic" onClick={() => speakArabic(item.arabic)}>🔊</button>
               <span>{item.transliteration}</span>
-              <small>{item.english}</small>
+              <small>{item.english}</small><SpeechPractice target={item.arabic} />
             </div>
           ))}
           {section.prompt && (

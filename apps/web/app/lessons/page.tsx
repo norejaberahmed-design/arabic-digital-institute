@@ -30,9 +30,9 @@ export default async function LessonsPage() {
         <p className="muted">تعلم عبارات عربية مفيدة من خلال مواقف قصيرة.</p>
       </section>
       {unavailable ? (
-        <div className="system-message"><strong>قاعدة البيانات غير متصلة بعد.</strong><p>شغّل PostgreSQL، أضف DATABASE_URL، ثم نفّذ ترحيل قاعدة البيانات وأمر seed.</p></div>
+        <div className="system-message"><strong>تعذر الاتصال بقاعدة بيانات المعهد.</strong><p>تحقق من إعداد DATABASE_URL وسجل تشغيل الخادم، ثم أعد المحاولة. يستخدم الإصدار التجريبي قاعدة SQLite.</p></div>
       ) : lessons.length === 0 ? (
-        <div className="system-message"><strong>لا توجد دروس منشورة حتى الآن.</strong><p>بعد إعداد قاعدة البيانات، شغّل أمر seed لإضافة الدرس الأول.</p></div>
+        <div className="system-message"><strong>لا توجد دروس منشورة حتى الآن.</strong><p>لا توجد دروس منشورة حالياً. يرجى العودة لاحقاً.</p></div>
       ) : (
         <section className="lesson-list">
           {lessons.map((lesson) => (
