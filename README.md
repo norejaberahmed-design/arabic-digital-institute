@@ -28,7 +28,7 @@ The initial implementation must support a mock AI provider so development and te
 - Learner mobile app: React Native, Expo, and TypeScript.
 - Administration web app: Next.js and TypeScript.
 - Backend: typed service/API layer.
-- Data: PostgreSQL and Prisma.
+- Current preview data: SQLite and Prisma. A durable production database is a release blocker; do not substitute a PostgreSQL URL until the schema and auth adapter are migrated together.
 - Quality: unit, integration, API-contract, and end-to-end tests.
 
 Technology choices are subject to repository and compatibility review before implementation.
@@ -45,7 +45,7 @@ Technology choices are subject to repository and compatibility review before imp
 ## Current implementation status
 
 - Public mobile-first web landing page and published-lesson catalog.
-- Twelve original Pre-A1 lessons across greetings, names, countries, languages, numbers, family, cafe requests, and everyday expressions, backed by PostgreSQL/Prisma seed data.
+- Sixteen original Pre-A1 lessons, including a first-conversation pathway, seeded through Prisma into the current SQLite preview database.
 - Email/password learner account flow using Better Auth.
 - Authenticated learner progress and activity-attempt API; answer keys are checked server-side.
 - Learner dashboard for saved lesson completion.
@@ -54,7 +54,7 @@ Technology choices are subject to repository and compatibility review before imp
 - Expo Android app on Expo SDK 58 / Android API 36 with live lesson catalog, lesson reader, native sign-in/sign-up, secure session storage, quiz attempts, completion sync, learner dashboard, and account deletion (requires `EXPO_PUBLIC_API_URL`).
 - CI workflow for type checks and production build.
 
-This is an active launch candidate, not yet a public production release. Remaining release gates: connect a persistent PostgreSQL database, configure deployment secrets and HTTPS hosting, obtain passing CI and smoke-test results, verify the Android app on a physical device, and finish password recovery/email verification, audio/speaking, and the next curriculum levels. The administrator console and native learner sign-in/progress flows are implemented in this branch.
+This is an active launch candidate, not yet a public production release. Remaining release gates: select and implement a durable database with backup/restore, verify deployment health and data persistence, verify Android on a physical device, implement password recovery/email verification, improve audio/speaking, and validate the first unit with beginner learners. The administrator console and native learner sign-in/progress flows are implemented in the current main branch. The AI tutor is planned, not yet implemented.
 
 ## Scope disclaimer
 

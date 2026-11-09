@@ -1,73 +1,103 @@
-# Launch readiness checklist
+# Launch Readiness — Preview Status
 
-## Current application capabilities
-- Public course landing page and published lesson catalog with twelve original Pre-A1 lessons.
-- Role-protected administrator content authoring and publishing screen/API.
-- Privacy and terms pages plus authenticated account deletion.
-- PostgreSQL/Prisma-backed published lesson content.
-- Better Auth email/password registration, login, and logout.
-- Authenticated lesson completion and quiz-attempt persistence.
-- Server-side quiz answer validation; public lesson responses omit answer keys.
-- Learner dashboard showing saved progress.
-- Android Expo SDK 58 client supports native registration/sign-in with secure session storage, lesson reading, quiz attempts, completion sync, learner progress dashboard, account deletion, and device-native Arabic pronunciation playback.
+**Last reviewed:** 9 November 2026  
+**Current status:** Preview / not approved for commercial launch.
 
-## Initial administrator access
+## Implemented in the repository
 
-New registrations receive the `LEARNER` role and cannot assign themselves administrator permissions. After the first trusted operator account is created, promote it manually in a controlled database session:
+- Mobile-first Arabic learning web experience and published Pre-A1 lesson catalog.
+- Sixteen original Pre-A1 lesson slugs in the current seed, including the three-session first-conversation pathway.
+- Better Auth email/password sign-up, sign-in and sign-out.
+- Authenticated learner profile, lesson attempts and progress endpoints.
+- Server-side answer checking; public lesson API responses omit section answer keys.
+- Learner dashboard and authenticated account deletion.
+- Role-checked admin lesson creation and publication controls.
+- Expo SDK 58 / React Native Android app with account, lesson catalog, lesson reader, secure session storage and progress flows.
+- GitHub Actions verifies Prisma schema generation, SQLite seed, web/mobile TypeScript, Expo Android export, Next production build and an integration smoke test.
 
-```sql
-UPDATE "User" SET "role" = 'ADMIN' WHERE "email" = 'admin@example.com';
-```
+## Critical truth about data persistence
 
-Replace the address with the exact verified operator email. Do not expose a public role-change endpoint.
+The current Prisma schema at `packages/database/prisma/schema.prisma` uses **SQLite**. Better Auth's Prisma adapter is configured with provider `sqlite`. The Render Blueprint creates a free Node web service and does not attach a persistent disk or provision a database.
 
-## Required environment
-- `DATABASE_URL`: pooled PostgreSQL connection string for runtime requests.
-- `DIRECT_URL`: direct, non-pooled PostgreSQL connection string used by Prisma migrations. For Neon, use its pooled URL for `DATABASE_URL` and direct URL for `DIRECT_URL`.
-- `BETTER_AUTH_SECRET`: unique high-entropy secret, at least 32 characters. Generate with `openssl rand -base64 32`.
-- `BETTER_AUTH_URL`: canonical public HTTPS URL of the deployed web app.
-- `EXPO_PUBLIC_API_URL`: canonical API origin used by the Android app.
+The preview currently uses a SQLite file path. Files on an ephemeral service filesystem can be lost when the service is replaced or restarted. Therefore:
+- Do not collect real learner records or promise durable progress on this preview.
+- Do not put a PostgreSQL connection string into the current SQLite-generated application.
+- Do not run `db:push` or seed automatically against a future production database at every process start.
+- Do not migrate or reset data until the target, backup, restore test and migration plan are approved.
 
-Never commit real secrets or production database URLs.
+A durable production database is a **P0 launch blocker**. The next engineering decision is to select a supported durable database and migrate Prisma schema, auth adapter, migrations, environment configuration, CI, and documentation together. The decision must include a free-tier/cost review and explicit approval before enabling any paid plan.
 
-## Preview deployment
+## Current environment
 
-1. Create a Neon PostgreSQL project in Frankfurt on the Free plan.
-2. Set the pooled connection string as `DATABASE_URL` and the direct connection string as `DIRECT_URL`.
-3. Connect the GitHub repository to Render and create a Blueprint from the root `render.yaml` on the preview branch.
-4. Review the proposed service. The Blueprint requests one Free web service in Frankfurt; it does not create a Render Postgres database. Render generates `BETTER_AUTH_SECRET`; enter the two Neon connection strings as secret values.
-5. The build applies Prisma migrations; the first successful deploy seeds the course.
-6. After the web service is live, run `eas build --platform android --profile preview` from the Expo/EAS account to create an installable APK.
+The web preview is hosted on Render:
+- URL: https://adi-arabic-institute-preview-fzjr.onrender.com
+- Service: `adi-arabic-institute-preview-fzjr`
+- Region: Frankfurt
+- Plan: Free
+- Blueprint branch: `main`
 
-This is a public preview configuration, not production hosting. The free Render service sleeps after 15 minutes idle and can take about a minute to wake. Use a paid always-on service and production-grade database/backups before a commercial launch.
+The Render free service may sleep when idle. This is acceptable for a development preview, not for a commercial service-level commitment.
 
-## Database setup
-1. Install dependencies with `pnpm install`.
-2. Generate Prisma Client with `pnpm db:generate`.
-3. Review the schema change adding Better Auth tables and the learner-to-user relation.
-4. Apply the migration in the intended environment with `pnpm db:migrate`.
-5. Seed all seven proficiency levels and ten original Pre-A1 lessons with `pnpm db:seed`.
-6. Verify `GET /api/health` returns `200` and `database: connected`.
+## Required environment variables
 
-Do not run migrations against a production database until the target database and backup are confirmed.
+- `DATABASE_URL`: currently a SQLite URL for preview only. This must be changed only as part of the reviewed durable-database migration.
+- `BETTER_AUTH_SECRET`: unique random secret, at least 32 characters.
+- `BETTER_AUTH_URL`: canonical HTTPS origin of the web service.
+- `EXPO_PUBLIC_API_URL`: HTTPS API origin compiled into the Android client.
 
-## Verification before public launch
-- CI passes web/mobile TypeScript checks and Next.js production build.
-- Test registration, login, logout, and duplicate-email behavior.
-- Test anonymous progress writes return 401.
-- Test learner A cannot read or modify learner B's progress.
-- Test quiz answer keys are absent from public lesson API responses.
-- Test answer attempts and lesson completion survive logout/login.
-- Test the Android catalog, native sign-in, cookie restoration, quiz attempts, progress dashboard, and account deletion on a physical device.
-- Configure HTTPS, domain, environment secrets, database backups, and error monitoring.
-- Promote the first administrator using the controlled SQL step above.
-- Test administrator content creation, draft review, publishing, and role restrictions.
-- Add more original, reviewed lessons across the planned proficiency levels.
+Never commit real secrets or production database URLs. Do not expose secret values in issue comments, logs, screenshots or chat.
 
-## Not yet included
-- Password reset and verified-email delivery.
-- Audio assets, speech recording, and AI tutor provider.
-- Full Pre-A1 through C2 content library.
-- Production hosting and a public domain.
+## Verified release evidence
 
-No paid AI provider or paid infrastructure is configured by this branch.
+- PR #10, which adds the three first-conversation lessons, passed GitHub Actions and was merged to `main`.
+- Render reports deployment `dep-dbovqqqvcj2c73f1s8ag` for commit `dcf67e758db4f1c4a73b8b6224e6ae6c3250796f` as `live` (9 November 2026, 17:09 UTC). This is a live preview deployment, not production readiness; its database remains SQLite at `file:/tmp/adi.db` on an ephemeral filesystem.
+- The CI smoke test covers health, published lessons, answer-key privacy, authentication, attempts, saved progress, cross-account isolation, learner denial from admin APIs and account deletion.
+- The expanded smoke test now also checks the three first-conversation lesson slugs and sample answer submissions; its result must pass in the audit PR before it is treated as verified.
+
+## Before real learner onboarding
+
+### P0 — Data and deployment
+- [ ] Choose durable database with cost and region review.
+- [ ] Align Prisma schema, Better Auth adapter, environment, migrations and CI.
+- [ ] Create backup and successfully restore it in a test environment.
+- [ ] Confirm current Render deploy is live and health endpoint returns 200.
+- [ ] Verify progress survives deploy/restart and a fresh sign-in.
+- [ ] Add a rollback plan; do not destructively reset any database.
+
+### P1 — Account and platform security
+- [ ] Password reset and verified-email flow.
+- [ ] Rate limiting for sign-in, sign-up and write APIs.
+- [ ] Central request/content validation.
+- [ ] CSRF/origin behavior tested for cookie-authenticated writes.
+- [ ] Security headers and dependency scanning.
+- [ ] Admin review/publish workflow and privileged-action audit trail.
+- [ ] Account export/deletion and retention policy reviewed.
+
+### P1 — Learning quality
+- [ ] Arabic language reviewer signs off on all published content.
+- [ ] Native-speaker audio rights and provenance recorded.
+- [ ] Web and Android support the required activity types.
+- [ ] Progress resume works after interruption and sign-in.
+- [ ] Completion reflects required learning evidence, not only a button press.
+- [ ] First unit tested with absolute beginners and revised from observations.
+
+### P2 — Commercial readiness
+- [ ] Physical Android device QA and Play Store preparation.
+- [ ] Accessibility, performance and security review.
+- [ ] Error monitoring, support contact and service-status process.
+- [ ] Privacy and terms reviewed for the actual operating entity and launch regions.
+- [ ] Evidence-based pricing test only after learner value and retention are demonstrated.
+
+## Not yet implemented / do not advertise as available
+
+- Production AI tutor or AI conversation partner.
+- AI-generated adaptive curriculum.
+- Expert phonetic pronunciation scoring.
+- Complete native-speaker audio library.
+- Full Pre-A1 through C2 course library.
+- Accredited CEFR certification or official institutional endorsement.
+- Production-grade uptime, backup/restore and durable student data.
+
+## Safe preview use
+
+Use the preview for internal demonstrations and non-sensitive testing only. Tell testers that it is a beta preview and that progress may not be durable. Never request sensitive personal information. The privacy notice and terms remain provisional until reviewed for the real operator and hosting/data providers.
