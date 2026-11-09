@@ -45,7 +45,22 @@ async function main() {
   const listResponse = await request("/api/lessons");
   if (!listResponse.ok) throw new Error("Published lesson list is unavailable.");
   const list = await listResponse.json();
-  if (!Array.isArray(list.data) || list.data.length < 12) throw new Error("Expected twelve seeded Pre-A1 lessons.");
+  if (!Array.isArray(list.data) || list.data.length < 16) throw new Error("Expected at least sixteen seeded Pre-A1 lessons.");
+  const requiredFirstConversationLessons = [
+    "first-arabic-welcome",
+    "first-arabic-expressions",
+    "first-arabic-conversation",
+  ];
+  const publishedSlugs = new Set(list.data.map(item => item.slug));
+  for (const slug of requiredFirstConversationLessons) {
+    if (!publishedSlugs.has(slug)) throw new Error(`Missing published first-conversation lesson: ${slug}`);
+    const response = await request(`/api/lessons/${slug}`);
+    if (!response.ok) throw new Error(`Public lesson endpoint failed for ${slug}.`);
+    const lesson = await response.json();
+    if (lesson.data.content.sections.some(section => Object.hasOwn(section, "answer"))) {
+      throw new Error(`Public lesson API exposed an answer key for ${slug}.`);
+    }
+  }
 
   const lessonResponse = await request("/api/lessons/first-greeting");
   if (!lessonResponse.ok) throw new Error("Public lesson endpoint failed.");
@@ -70,6 +85,22 @@ async function main() {
   if (!attemptResponse.ok) throw new Error(`Authenticated quiz attempt failed: ${await attemptResponse.text()}`);
   const attempt = await attemptResponse.json();
   if (attempt.data.isCorrect !== true) throw new Error("Server-side answer validation returned an unexpected result.");
+
+  const firstConversationChecks = [
+    { lessonSlug: "first-arabic-welcome", activityId: "welcome-direction-check", answer: "b" },
+    { lessonSlug: "first-arabic-expressions", activityId: "expressions-question-check", answer: "a" },
+    { lessonSlug: "first-arabic-conversation", activityId: "conversation-order", answer: "a" },
+  ];
+  for (const check of firstConversationChecks) {
+    const response = await request("/api/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Cookie: cookieOne },
+      body: JSON.stringify({ action: "attempt", ...check }),
+    });
+    if (!response.ok) throw new Error(`First-conversation attempt failed for ${check.lessonSlug}: ${await response.text()}`);
+    const result = await response.json();
+    if (result.data.isCorrect !== true) throw new Error(`First-conversation answer check failed for ${check.lessonSlug}.`);
+  }
 
   const completeResponse = await request("/api/progress", {
     method: "POST",
@@ -97,7 +128,7 @@ async function main() {
   const afterDelete = await request("/api/progress", { headers: { Cookie: cookieTwo } });
   if (afterDelete.status !== 401) throw new Error("Deleted account session remained active.");
 
-  console.log("PASS: health, lessons, answer-key privacy, authentication, quiz attempts, progress persistence, tenant isolation, admin authorization, and account deletion.");
+  console.log("PASS: health, 16+ lessons, first-conversation lesson delivery and answer-key privacy, authentication, quiz attempts, progress persistence, tenant isolation, admin authorization, and account deletion.");
 }
 
 main().catch(error => {
