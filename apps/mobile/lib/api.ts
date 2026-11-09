@@ -4,6 +4,13 @@ const configuredUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
 
 export const apiBaseUrl = configuredUrl ? configuredUrl.replace(/\/$/, "") : "";
 
+function apiErrorMessage(code?: string, fallback = "تعذر تنفيذ العملية.") {
+  if (code === "LESSON_REQUIREMENTS_INCOMPLETE") {
+    return "أكمل جميع التمارين المطلوبة بإجابة صحيحة قبل إنهاء الدرس.";
+  }
+  return code || fallback;
+}
+
 export async function apiGet<T>(path: string): Promise<T> {
   if (!apiBaseUrl) throw new Error("أضف EXPO_PUBLIC_API_URL إلى إعدادات تطبيق الهاتف.");
   const response = await fetch(`${apiBaseUrl}${path}`);
@@ -26,7 +33,7 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   const result = await response.json().catch(() => ({})) as { error?: string };
   if (!response.ok) {
     if (response.status === 401) throw new Error("سجّل الدخول أولاً حتى نحفظ تقدمك.");
-    throw new Error(result.error || "تعذر حفظ البيانات.");
+    throw new Error(apiErrorMessage(result.error, "تعذر حفظ البيانات."));
   }
   return result as T;
 }
