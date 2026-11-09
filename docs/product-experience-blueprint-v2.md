@@ -76,3 +76,32 @@ A beautiful, calm, mobile-first Arabic-learning institute for English-speaking b
 - Stage 4: learner skill profile, review scheduling and progress evidence.
 - Stage 5: AI tutor and speech assessment only after provider, cost, privacy and validation approval.
 - Stage 6: A1 curriculum, teacher review workflow and public beta.
+
+
+## Competitor evidence baseline (research snapshot: 9 November 2026)
+
+This is a feature benchmark, not a claim that the institute already outperforms these products.
+
+| Product | Publicly described strength | ADI response |
+|---|---|---|
+| Duolingo | Short lessons, progression and engagement loops | Keep practice short and motivating, but tie progress to demonstrated language outcomes |
+| Ahlan Wa Sahlan (King Salman Global Academy) | Structured Arabic learning, global standards and all four skills | Use skill-specific outcomes and clear evidence across listening, speaking, reading and writing |
+| Nabra — AI Arabic Coach | Google Play listing describes real-time pronunciation scoring, letter-level color feedback, adaptive games and an AI coach | Treat Arabic phoneme feedback and color-coded correction as a competitive baseline; independently validate any scoring before release |
+| Aqra | Public product page describes placement, short lessons, interactive practice, Arabic alphabet and writing practice | Build a coherent progression from letter recognition to connected reading and real communication |
+
+Public references:
+- Duolingo Arabic-language product page: https://ar.duolingo.com/
+- Ahlan Wa Sahlan, King Salman Global Academy: https://ahlan.ksaa.gov.sa/
+- Nabra — AI Arabic Coach, Google Play listing: https://play.google.com/store/apps/details?id=com.nabra.app
+- Aqra: https://aqra.uz/en
+- 2026 Arabic learning app landscape overview: https://www.classcentral.com/report/top-arabic-learning-apps/
+
+### What ADI must prove to claim competitive advantage
+1. Arabic letter-form correctness across all 28 letters, including the six non-connecting letters.
+2. Human-reviewed reference audio for every taught sound and target phrase.
+3. Pronunciation feedback validated against expert human ratings, with false-positive and false-negative rates measured across speakers, dialect backgrounds and mobile devices.
+4. Separate learner evidence for listening, speaking, reading and writing—not one blended score.
+5. Completion and retention outcomes in a real beginner pilot compared with a pre-defined baseline.
+6. Mobile accessibility, low-bandwidth behavior and stable progress restoration.
+
+Do not use competitor claims as proof of ADI performance. The product earns a competitive claim only after independent testing and learner evidence.
