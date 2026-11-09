@@ -707,7 +707,249 @@ async function main() {
     }
   });
 
-  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and thirteen original Pre-A1 lessons.");
+
+  // First complete beginner pathway: three short, connected sessions.
+  // These lessons use the existing content schema and authenticated progress API.
+  const firstConversationSessions = [
+    {
+      slug: "first-arabic-welcome",
+      title: "Welcome to Arabic",
+      summary: "Discover the Arabic writing direction and recognize your first four letters.",
+      objective: "Identify right-to-left writing and recognize ا ب ت ث.",
+      durationMin: 9,
+      position: -6,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        learningOutcomes: [
+          "Identify that Arabic is normally written from right to left.",
+          "Recognize ا ب ت ث in isolated form.",
+          "Distinguish ب، ت، ث by dot placement."
+        ],
+        sections: [
+          {
+            id: "welcome-direction",
+            type: "reading",
+            title: "Your first look at Arabic",
+            items: [
+              { arabic: "العربية", transliteration: "al-arabiyya", english: "Arabic. Notice that the word begins on the right." },
+              { arabic: "ا", transliteration: "alif", english: "A tall, simple letter shape." },
+              { arabic: "ب", transliteration: "baa", english: "One dot below the main shape." },
+              { arabic: "ت", transliteration: "taa", english: "Two dots above the main shape." },
+              { arabic: "ث", transliteration: "thaa", english: "Three dots above the main shape. Its sound is like th in think." }
+            ]
+          },
+          {
+            id: "welcome-letter-studio",
+            type: "letter-studio",
+            title: "Explore your first four letters",
+            letters: [
+              { char: "ا", name: "alif", sound: "long aa (in some words)", example: "باب", meaning: "door", forms: ["ا", "ا", "ـا", "ـا"], note: "Alif does not connect to the letter that follows it." },
+              { char: "ب", name: "baa", sound: "b as in boy", example: "باب", meaning: "door", forms: ["ب", "بـ", "ـبـ", "ـب"], note: "One dot below the base shape." },
+              { char: "ت", name: "taa", sound: "t as in top", example: "تِين", meaning: "figs", forms: ["ت", "تـ", "ـتـ", "ـت"], note: "Two dots above the base shape." },
+              { char: "ث", name: "thaa", sound: "th as in think", example: "ثَوْب", meaning: "garment", forms: ["ث", "ثـ", "ـثـ", "ـث"], note: "Three dots above. This is not the sound in this." }
+            ]
+          },
+          {
+            id: "welcome-direction-check",
+            type: "multiple-choice",
+            title: "Check the writing direction",
+            prompt: "Where do you begin when reading an Arabic word?",
+            options: [
+              { id: "a", label: "At the left" },
+              { id: "b", label: "At the right" },
+              { id: "c", label: "At the bottom" }
+            ],
+            answer: "b",
+            explanation: "Arabic is normally read from right to left."
+          },
+          {
+            id: "welcome-dot-check",
+            type: "multiple-choice",
+            title: "Notice the dots",
+            prompt: "Which letter has three dots above its shape?",
+            options: [
+              { id: "a", label: "ب" },
+              { id: "b", label: "ت" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "c",
+            explanation: "ث has three dots above. ب has one dot below, and ت has two dots above."
+          }
+        ]
+      }
+    },
+    {
+      slug: "first-arabic-expressions",
+      title: "Understand your first Arabic expressions",
+      summary: "Listen to greetings, ask someone's name, and learn a simple answer.",
+      objective: "Understand five useful expressions for a first meeting.",
+      durationMin: 10,
+      position: -5,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        learningOutcomes: [
+          "Understand مرحبا and أهلا as greetings.",
+          "Recognize ما اسمك؟ as a question about a name.",
+          "Use اسمي ... as a simple name response.",
+          "Recognize شكرا as thank you."
+        ],
+        sections: [
+          {
+            id: "expressions-dialogue",
+            type: "dialogue",
+            title: "Listen to a first meeting",
+            lines: [
+              { speaker: "A", arabic: "مرحبا", transliteration: "mar-ha-ban", english: "Hello." },
+              { speaker: "B", arabic: "أهلا", transliteration: "ah-lan", english: "Hi / Welcome." },
+              { speaker: "A", arabic: "ما اسمك؟", transliteration: "ma is-muk?", english: "What is your name?" },
+              { speaker: "B", arabic: "اسمي أليكس", transliteration: "is-mee Alex", english: "My name is Alex." }
+            ]
+          },
+          {
+            id: "expressions-vocabulary",
+            type: "vocabulary",
+            title: "Five useful expressions",
+            items: [
+              { arabic: "مرحبا", transliteration: "mar-ha-ban", english: "Hello" },
+              { arabic: "أهلا", transliteration: "ah-lan", english: "Hi / Welcome" },
+              { arabic: "ما اسمك؟", transliteration: "ma is-muk?", english: "What is your name?" },
+              { arabic: "اسمي ...", transliteration: "is-mee ...", english: "My name is ..." },
+              { arabic: "شكرا", transliteration: "shuk-ran", english: "Thank you" }
+            ]
+          },
+          {
+            id: "expressions-question-check",
+            type: "multiple-choice",
+            title: "Understand the question",
+            prompt: "What does ما اسمك؟ ask?",
+            options: [
+              { id: "a", label: "What is your name?" },
+              { id: "b", label: "Where is the door?" },
+              { id: "c", label: "Thank you" }
+            ],
+            answer: "a",
+            explanation: "ما اسمك؟ is a useful question meaning “What is your name?”"
+          },
+          {
+            id: "expressions-answer-check",
+            type: "multiple-choice",
+            title: "Choose a simple answer",
+            prompt: "Someone asks ما اسمك؟ Which answer gives a name?",
+            options: [
+              { id: "a", label: "شكرا" },
+              { id: "b", label: "اسمي أليكس" },
+              { id: "c", label: "مرحبا" }
+            ],
+            answer: "b",
+            explanation: "اسمي أليكس means “My name is Alex.” Replace Alex with your own name when you speak."
+          }
+        ]
+      }
+    },
+    {
+      slug: "first-arabic-conversation",
+      title: "Have your first Arabic conversation",
+      summary: "Practice a short first-meeting exchange and respond with your own name.",
+      objective: "Complete a supported greeting and name exchange in the correct order.",
+      durationMin: 10,
+      position: -4,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        learningOutcomes: [
+          "Respond to a greeting.",
+          "Understand a question about a name.",
+          "Use اسمي followed by the learner's own name.",
+          "Complete a short four-turn exchange with reduced prompts."
+        ],
+        sections: [
+          {
+            id: "conversation-model",
+            type: "dialogue",
+            title: "Your first conversation",
+            lines: [
+              { speaker: "A", arabic: "مرحبا", transliteration: "mar-ha-ban", english: "Hello." },
+              { speaker: "You", arabic: "أهلا", transliteration: "ah-lan", english: "Hi." },
+              { speaker: "A", arabic: "ما اسمك؟", transliteration: "ma is-muk?", english: "What is your name?" },
+              { speaker: "You", arabic: "اسمي أليكس", transliteration: "is-mee Alex", english: "My name is Alex. Say your own name instead of Alex." }
+            ]
+          },
+          {
+            id: "conversation-order",
+            type: "multiple-choice",
+            title: "Choose the right response",
+            prompt: "A person says مرحبا. What is a suitable friendly response?",
+            options: [
+              { id: "a", label: "أهلا" },
+              { id: "b", label: "ما اسمك؟" },
+              { id: "c", label: "شكرا" }
+            ],
+            answer: "a",
+            explanation: "أهلا is a friendly response to مرحبا."
+          },
+          {
+            id: "conversation-name",
+            type: "multiple-choice",
+            title: "Answer the name question",
+            prompt: "You hear ما اسمك؟ Which phrase can you use before saying your name?",
+            options: [
+              { id: "a", label: "مرحبا" },
+              { id: "b", label: "اسمي ..." },
+              { id: "c", label: "شكرا" }
+            ],
+            answer: "b",
+            explanation: "Use اسمي followed by your name. For example: اسمي أليكس. Now try saying it with your own name."
+          },
+          {
+            id: "conversation-reflection",
+            type: "multiple-choice",
+            title: "Check what you can do",
+            prompt: "Which task can you now complete?",
+            options: [
+              { id: "a", label: "Greet someone and exchange names with help" },
+              { id: "b", label: "Hold a long conversation about any topic" },
+              { id: "c", label: "Read every Arabic word" }
+            ],
+            answer: "a",
+            explanation: "You have learned a first supported exchange. More vocabulary and practice will build your skills step by step."
+          }
+        ]
+      }
+    }
+  ];
+
+  for (const session of firstConversationSessions) {
+    await prisma.lesson.upsert({
+      where: { levelId_slug: { levelId: level.id, slug: session.slug } },
+      update: {
+        title: session.title,
+        summary: session.summary,
+        objective: session.objective,
+        durationMin: session.durationMin,
+        position: session.position,
+        status: "PUBLISHED",
+        content: session.content
+      },
+      create: {
+        levelId: level.id,
+        slug: session.slug,
+        title: session.title,
+        summary: session.summary,
+        objective: session.objective,
+        durationMin: session.durationMin,
+        position: session.position,
+        status: "PUBLISHED",
+        content: session.content
+      }
+    });
+  }
+
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and sixteen original Pre-A1 lessons.");
 }
 
 main()
