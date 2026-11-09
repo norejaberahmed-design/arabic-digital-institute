@@ -105,3 +105,31 @@ Public references:
 6. Mobile accessibility, low-bandwidth behavior and stable progress restoration.
 
 Do not use competitor claims as proof of ADI performance. The product earns a competitive claim only after independent testing and learner evidence.
+
+
+## Arabic audio and pronunciation data research (9 November 2026)
+
+Potential sources were screened for task fit and license. None should be treated as a ready-made pronunciation product.
+
+| Source | What it contains | Decision |
+|---|---|---|
+| Nahw Arabic Tashkeel Speech (CC BY 4.0) | About 1,093 fully vowelled recordings, 10 speakers, human-reviewed transcripts | Candidate for an attributed ASR research baseline; too small and sentence-oriented to serve as the only reference set or a phoneme-level learner scoring benchmark |
+| Mozilla Common Voice Arabic 27.0 (CC0) | Read Arabic speech, listed at about 158 hours and 1,679 speakers | Candidate for ASR training/evaluation only after checking its data terms; do not re-host or redistribute the corpus |
+| L2-KSU MDD dataset | Arabic L2/native speech with phone-level annotations and mispronunciation labels | Valuable research reference, but its CC BY-NC-ND license and gated access make it unsuitable for commercial model training or redistribution |
+| Wikimedia Arabic alphabet recording | One 50-second alphabet recording under GFDL | Not adopted as the per-letter source: one continuous recording is not a reviewed, isolated audio asset set and carries share-alike attribution obligations |
+| Mendeley Hijaiyah pronunciation dataset | Search listing describes 21,600 correct/incorrect recordings across letters and vowel marks | Do not use until the full license, recording protocol, dialect, speaker consent and quality are verified |
+
+Research links:
+- Nahw dataset and license: https://huggingface.co/datasets/NahwAI/arabic-tashkeel-speech
+- Mozilla Common Voice Arabic 27.0 dataset card: https://mozilladatacollective.com/datasets/cmu5wom3z00ceo107guxtg4xa
+- L2-KSU mispronunciation dataset and license: https://huggingface.co/datasets/IWAN/L2-KSU-Dataset
+- Wikimedia alphabet audio and GFDL notice: https://commons.wikimedia.org/wiki/File:حروف_الأبجدية_العربية_Arabic_alphabet.ogg
+- Mendeley dataset listing: https://data.mendeley.com/datasets/r5fy2dd98g/1
+
+### Implementation decision
+- Create an original, rights-cleared ADI audio set with named/consenting speakers, clear register and accent metadata, isolated sounds, syllables, words and connected phrases.
+- Have a qualified Arabic phonetics reviewer approve the reference pronunciation and a second reviewer resolve disputed sounds.
+- Use public datasets only within their exact license and data-use restrictions.
+- Keep ASR (what words were recognized) separate from pronunciation assessment (which phonetic contrasts were realized correctly).
+- Build a labeled learner-speech evaluation set with consent and expert ratings before showing numeric pronunciation scores.
+- Begin with specific, explainable feedback for a small validated set of contrasts; expand only after measured reliability.
