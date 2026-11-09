@@ -429,7 +429,248 @@ async function main() {
     });
   }
 
-  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and twelve original Pre-A1 lessons.");
+  // First curriculum-quality letter and sound lesson: original content for English-speaking beginners.
+  // The existing lesson player supports reading/vocabulary cards and server-checked multiple-choice activities.
+  await prisma.lesson.upsert({
+    where: { levelId_slug: { levelId: level.id, slug: "letters-baa-taa-thaa" } },
+    update: {
+      title: "Meet ب ت ث: three letters, three sounds",
+      summary: "Notice the shapes, dots, connected forms, and first short-vowel contrasts.",
+      objective: "Recognize ب ت ث, identify their common connected forms, and distinguish بَ بِ بُ.",
+      durationMin: 10,
+      status: "PUBLISHED",
+      position: -3,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        curriculum: {
+          stage: "PRE_A1",
+          unit: "Arabic letter and sound foundations",
+          primaryCanDo: "I can recognize the letters ب ت ث and distinguish three short-vowel patterns on ب.",
+          skills: ["reading", "listening-awareness", "writing-awareness"],
+          supportPolicy: "English support is used for explanations; Arabic script remains the focus.",
+          mastery: "At least 80% on the recognition checks, followed by a successful spoken or written practice attempt with a teacher or partner."
+        },
+        sections: [
+          {
+            id: "mission",
+            type: "reading",
+            title: "Your mission",
+            items: [
+              { arabic: "ب ت ث", transliteration: "b · t · th", english: "Recognize the three shapes and notice where their dots sit." },
+              { arabic: "ب", transliteration: "baa", english: "One dot below: the /b/ sound, as in English “book”." },
+              { arabic: "ت", transliteration: "taa", english: "Two dots above: the /t/ sound, as in English “tea”." },
+              { arabic: "ث", transliteration: "thaa", english: "Three dots above: /th/ as in “think”, not the sound in “this”." }
+            ]
+          },
+          {
+            id: "shape-positions",
+            type: "reading",
+            title: "The letter changes shape when it joins",
+            items: [
+              { arabic: "ب  بـ  ـبـ  ـب", transliteration: "baa", english: "Isolated · beginning · middle · end" },
+              { arabic: "ت  تـ  ـتـ  ـت", transliteration: "taa", english: "Isolated · beginning · middle · end" },
+              { arabic: "ث  ثـ  ـثـ  ـث", transliteration: "thaa", english: "Isolated · beginning · middle · end" }
+            ]
+          },
+          {
+            id: "sound-awareness",
+            type: "vocabulary",
+            title: "Listen and notice the difference",
+            items: [
+              { arabic: "ب", transliteration: "b", english: "Close both lips, then release the sound." },
+              { arabic: "ت", transliteration: "t", english: "Touch the area just behind the upper teeth." },
+              { arabic: "ث", transliteration: "th", english: "Place the tongue lightly between the teeth; use the sound in “think”." }
+            ]
+          },
+          {
+            id: "dots-check",
+            type: "multiple-choice",
+            title: "Check the dots",
+            prompt: "Which letter has one dot below its main shape?",
+            options: [
+              { id: "a", label: "ت" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "b",
+            explanation: "ب has one dot below. ت has two dots above, and ث has three dots above."
+          },
+          {
+            id: "sound-check",
+            type: "multiple-choice",
+            title: "Connect the letter and sound",
+            prompt: "Which Arabic letter begins with the /th/ sound in the English word “think”?",
+            options: [
+              { id: "a", label: "ب" },
+              { id: "b", label: "ت" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "c",
+            explanation: "ث represents the voiceless “th” sound in “think”. It is different from ذ, the voiced “th” in “this”."
+          },
+          {
+            id: "vowel-notice",
+            type: "reading",
+            title: "A small mark changes the vowel",
+            items: [
+              { arabic: "بَ", transliteration: "ba", english: "FatHa: short “a” sound" },
+              { arabic: "بِ", transliteration: "bi", english: "Kasra: short “i” sound" },
+              { arabic: "بُ", transliteration: "bu", english: "Damma: short “u” sound" }
+            ]
+          },
+          {
+            id: "vowel-check",
+            type: "multiple-choice",
+            title: "Read the vowel mark",
+            prompt: "Which form has kasra and is read “bi”?",
+            options: [
+              { id: "a", label: "بَ" },
+              { id: "b", label: "بِ" },
+              { id: "c", label: "بُ" }
+            ],
+            answer: "b",
+            explanation: "Kasra is written below the letter: بِ. In this first lesson, focus on recognizing and selecting the mark; later writing activities will ask you to add it yourself."
+          },
+          {
+            id: "retrieval",
+            type: "multiple-choice",
+            title: "Quick memory check",
+            prompt: "Which letter has three dots above?",
+            options: [
+              { id: "a", label: "ث" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ت" }
+            ],
+            answer: "a",
+            explanation: "ث has three dots above its shape."
+          }
+        ]
+      }
+    },
+    create: {
+      levelId: level.id,
+      slug: "letters-baa-taa-thaa",
+      title: "Meet ب ت ث: three letters, three sounds",
+      summary: "Notice the shapes, dots, connected forms, and first short-vowel contrasts.",
+      objective: "Recognize ب ت ث, identify their common connected forms, and distinguish بَ بِ بُ.",
+      durationMin: 10,
+      status: "PUBLISHED",
+      position: -3,
+      content: {
+        version: 1,
+        language: "ar",
+        instructionLanguage: "en",
+        curriculum: {
+          stage: "PRE_A1",
+          unit: "Arabic letter and sound foundations",
+          primaryCanDo: "I can recognize the letters ب ت ث and distinguish three short-vowel patterns on ب.",
+          skills: ["reading", "listening-awareness", "writing-awareness"],
+          supportPolicy: "English support is used for explanations; Arabic script remains the focus.",
+          mastery: "At least 80% on the recognition checks, followed by a successful spoken or written practice attempt with a teacher or partner."
+        },
+        sections: [
+          {
+            id: "mission",
+            type: "reading",
+            title: "Your mission",
+            items: [
+              { arabic: "ب ت ث", transliteration: "b · t · th", english: "Recognize the three shapes and notice where their dots sit." },
+              { arabic: "ب", transliteration: "baa", english: "One dot below: the /b/ sound, as in English “book”." },
+              { arabic: "ت", transliteration: "taa", english: "Two dots above: the /t/ sound, as in English “tea”." },
+              { arabic: "ث", transliteration: "thaa", english: "Three dots above: /th/ as in “think”, not the sound in “this”." }
+            ]
+          },
+          {
+            id: "shape-positions",
+            type: "reading",
+            title: "The letter changes shape when it joins",
+            items: [
+              { arabic: "ب  بـ  ـبـ  ـب", transliteration: "baa", english: "Isolated · beginning · middle · end" },
+              { arabic: "ت  تـ  ـتـ  ـت", transliteration: "taa", english: "Isolated · beginning · middle · end" },
+              { arabic: "ث  ثـ  ـثـ  ـث", transliteration: "thaa", english: "Isolated · beginning · middle · end" }
+            ]
+          },
+          {
+            id: "sound-awareness",
+            type: "vocabulary",
+            title: "Listen and notice the difference",
+            items: [
+              { arabic: "ب", transliteration: "b", english: "Close both lips, then release the sound." },
+              { arabic: "ت", transliteration: "t", english: "Touch the area just behind the upper teeth." },
+              { arabic: "ث", transliteration: "th", english: "Place the tongue lightly between the teeth; use the sound in “think”." }
+            ]
+          },
+          {
+            id: "dots-check",
+            type: "multiple-choice",
+            title: "Check the dots",
+            prompt: "Which letter has one dot below its main shape?",
+            options: [
+              { id: "a", label: "ت" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "b",
+            explanation: "ب has one dot below. ت has two dots above, and ث has three dots above."
+          },
+          {
+            id: "sound-check",
+            type: "multiple-choice",
+            title: "Connect the letter and sound",
+            prompt: "Which Arabic letter begins with the /th/ sound in the English word “think”?",
+            options: [
+              { id: "a", label: "ب" },
+              { id: "b", label: "ت" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "c",
+            explanation: "ث represents the voiceless “th” sound in “think”. It is different from ذ, the voiced “th” in “this”."
+          },
+          {
+            id: "vowel-notice",
+            type: "reading",
+            title: "A small mark changes the vowel",
+            items: [
+              { arabic: "بَ", transliteration: "ba", english: "FatHa: short “a” sound" },
+              { arabic: "بِ", transliteration: "bi", english: "Kasra: short “i” sound" },
+              { arabic: "بُ", transliteration: "bu", english: "Damma: short “u” sound" }
+            ]
+          },
+          {
+            id: "vowel-check",
+            type: "multiple-choice",
+            title: "Read the vowel mark",
+            prompt: "Which form has kasra and is read “bi”?",
+            options: [
+              { id: "a", label: "بَ" },
+              { id: "b", label: "بِ" },
+              { id: "c", label: "بُ" }
+            ],
+            answer: "b",
+            explanation: "Kasra is written below the letter: بِ. In this first lesson, focus on recognizing and selecting the mark; later writing activities will ask you to add it yourself."
+          },
+          {
+            id: "retrieval",
+            type: "multiple-choice",
+            title: "Quick memory check",
+            prompt: "Which letter has three dots above?",
+            options: [
+              { id: "a", label: "ث" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ت" }
+            ],
+            answer: "a",
+            explanation: "ث has three dots above its shape."
+          }
+        ]
+      }
+    }
+  });
+
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, twelve original Pre-A1 lessons, and the first letter-sound lesson.");
+
 }
 
 main()
