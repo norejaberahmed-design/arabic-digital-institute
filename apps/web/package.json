@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "cd ../.. && pnpm db:push && pnpm db:seed && pnpm --filter @adi/web exec next start",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
