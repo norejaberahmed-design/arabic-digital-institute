@@ -75,11 +75,6 @@ export default function AlphabetExplorer() {
     );
   }, [query]);
 
-  const choices = [
-    { value: current.initial, label: "أول الكلمة", correct: true },
-    { value: current.medial, label: "وسط الكلمة", correct: false },
-    { value: current.final, label: "آخر الكلمة", correct: false },
-  ];
   const correctChoice = current.medial;
   const quizOptions = [
     { value: current.initial, label: "بداية الكلمة" },
