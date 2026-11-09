@@ -8,7 +8,6 @@ services:
     autoDeployTrigger: checksPass
     buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile && pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @adi/web build
     startCommand: pnpm --filter @adi/web start
-    initialDeployHook: pnpm db:seed
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION

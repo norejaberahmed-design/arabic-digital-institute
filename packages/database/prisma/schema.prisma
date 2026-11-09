@@ -3,31 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-}
-
-enum PublicationStatus {
-  DRAFT
-  REVIEW
-  PUBLISHED
-  ARCHIVED
-}
-
-enum UserRole {
-  LEARNER
-  ADMIN
-}
-
-enum ProficiencyLevel {
-  PRE_A1
-  A1
-  A2
-  B1
-  B2
-  C1
-  C2
 }
 
 model User {
@@ -36,7 +13,7 @@ model User {
   email         String    @unique
   emailVerified Boolean   @default(false)
   image         String?
-  role          UserRole  @default(LEARNER)
+  role          String    @default("LEARNER")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
@@ -101,7 +78,7 @@ model Level {
   id          String           @id @default(cuid())
   courseId    String
   course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  code        ProficiencyLevel
+  code        String
   title       String
   description String
   position    Int
@@ -119,7 +96,7 @@ model Lesson {
   summary     String
   objective   String
   durationMin Int               @default(7)
-  status      PublicationStatus @default(DRAFT)
+  status      String            @default("DRAFT")
   position    Int
   content     Json
   createdAt   DateTime          @default(now())

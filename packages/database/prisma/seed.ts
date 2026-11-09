@@ -1,4 +1,4 @@
-import { PrismaClient, ProficiencyLevel } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -16,11 +16,11 @@ async function main() {
   });
 
   const level = await prisma.level.upsert({
-    where: { courseId_code: { courseId: course.id, code: ProficiencyLevel.PRE_A1 } },
+    where: { courseId_code: { courseId: course.id, code: "PRE_A1" } },
     update: {},
     create: {
       courseId: course.id,
-      code: ProficiencyLevel.PRE_A1,
+      code: "PRE_A1",
       title: "Your first Arabic words",
       description: "Greetings and simple introductions.",
       position: 0,
@@ -28,12 +28,12 @@ async function main() {
   });
 
   const remainingLevels = [
-    { code: ProficiencyLevel.A1, title: "Everyday Arabic", description: "Family, food, time, routines, and places.", position: 1 },
-    { code: ProficiencyLevel.A2, title: "Independent communication", description: "Work, travel, health, plans, and messages.", position: 2 },
-    { code: ProficiencyLevel.B1, title: "Stories and opinions", description: "Experiences, problems, opinions, and everyday texts.", position: 3 },
-    { code: ProficiencyLevel.B2, title: "Confident communication", description: "Discussion, media, current topics, and professional communication.", position: 4 },
-    { code: ProficiencyLevel.C1, title: "Advanced Arabic", description: "Academic and professional discourse, reports, and argumentation.", position: 5 },
-    { code: ProficiencyLevel.C2, title: "Mastery", description: "Nuance, precision, and advanced communication.", position: 6 },
+    { code: "A1", title: "Everyday Arabic", description: "Family, food, time, routines, and places.", position: 1 },
+    { code: "A2", title: "Independent communication", description: "Work, travel, health, plans, and messages.", position: 2 },
+    { code: "B1", title: "Stories and opinions", description: "Experiences, problems, opinions, and everyday texts.", position: 3 },
+    { code: "B2", title: "Confident communication", description: "Discussion, media, current topics, and professional communication.", position: 4 },
+    { code: "C1", title: "Advanced Arabic", description: "Academic and professional discourse, reports, and argumentation.", position: 5 },
+    { code: "C2", title: "Mastery", description: "Nuance, precision, and advanced communication.", position: 6 },
   ];
 
   for (const item of remainingLevels) {
