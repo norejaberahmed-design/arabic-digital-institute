@@ -453,6 +453,17 @@ async function main() {
         ],
         sections: [
           {
+            id: "letter-studio-3d",
+            type: "letter-studio",
+            title: "Explore each letter in the 3D letter studio",
+            letters: [
+              { char: "ا", name: "alif", sound: "long aa", example: "باب", meaning: "door", forms: ["ا", "ا", "ـا", "ـا"], note: "Alif connects to a letter before it, but not to the letter after it." },
+              { char: "ب", name: "baa", sound: "b as in boy", example: "باب", meaning: "door", forms: ["ب", "بـ", "ـبـ", "ـب"], note: "One dot below the bowl-shaped body." },
+              { char: "ت", name: "taa", sound: "t as in top", example: "تِين", meaning: "figs", forms: ["ت", "تـ", "ـتـ", "ـت"], note: "Two dots above the body." },
+              { char: "ث", name: "thaa", sound: "th as in think", example: "ثَوْب", meaning: "garment", forms: ["ث", "ثـ", "ـثـ", "ـث"], note: "Three dots above the body. This is /θ/, not the sound in this." }
+            ]
+          },
+          {
             id: "letter-shapes",
             type: "vocabulary",
             title: "Explore the four letters and their shapes",
@@ -586,6 +597,17 @@ async function main() {
           "Read باب and add selected short-vowel marks."
         ],
         sections: [
+          {
+            id: "letter-studio-3d",
+            type: "letter-studio",
+            title: "Explore each letter in the 3D letter studio",
+            letters: [
+              { char: "ا", name: "alif", sound: "long aa", example: "باب", meaning: "door", forms: ["ا", "ا", "ـا", "ـا"], note: "Alif connects to a letter before it, but not to the letter after it." },
+              { char: "ب", name: "baa", sound: "b as in boy", example: "باب", meaning: "door", forms: ["ب", "بـ", "ـبـ", "ـب"], note: "One dot below the bowl-shaped body." },
+              { char: "ت", name: "taa", sound: "t as in top", example: "تِين", meaning: "figs", forms: ["ت", "تـ", "ـتـ", "ـت"], note: "Two dots above the body." },
+              { char: "ث", name: "thaa", sound: "th as in think", example: "ثَوْب", meaning: "garment", forms: ["ث", "ثـ", "ـثـ", "ـث"], note: "Three dots above the body. This is /θ/, not the sound in this." }
+            ]
+          },
           {
             id: "letter-shapes",
             type: "vocabulary",
