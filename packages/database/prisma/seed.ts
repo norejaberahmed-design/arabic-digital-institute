@@ -685,7 +685,7 @@ async function main() {
     }
   });
 
-  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and twelve original Pre-A1 lessons.");
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and thirteen original Pre-A1 lessons.");
 }
 
 main()
