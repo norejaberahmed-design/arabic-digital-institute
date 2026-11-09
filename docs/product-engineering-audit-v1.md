@@ -137,6 +137,9 @@ This is a product-pattern benchmark based on public official product pages, not 
 | Busuu | Expert-built CEFR courses, bite-sized lessons, checkpoints, AI grammar support and community corrections | Need clear can-do outcomes, checkpoint assessments, and a future reviewed feedback/community layer |
 | Mango Languages | Conversation-first lessons, native-speaker audio, phrase building, cultural notes and spaced review | Make authentic dialogue and high-quality human audio central, not optional decoration |
 | Memrise | Arabic learning, AI tutor/conversation practice, level-matched video and expert-created lessons | A future ADI tutor must be grounded, measurable, transparent and useful—not just an open-ended chatbot |
+| AlifBee | Arabic-focused multi-level curriculum, alphabet and writing instruction, four skills, AI personalization, adaptive tests and spaced review | A serious direct competitor; ADI must differentiate through better beginner sequencing, transparent skill evidence, careful language policy and reliable AI grounding |
+| Kaleela | MSA plus multiple regional dialect courses, alphabet instruction, audio, pronunciation practice and CEFR-guided exercises | Regional dialect choice is a market expectation; ADI can start with shared Arabic but should make dialect comparison a deliberate later pathway |
+| Arabic Unlocked | Guided levels, alphabet and short vowels, flashcards/audio, scenario vocabulary, spaced repetition and progress motivation | Strong script-to-reading progression and review are table stakes, not unique features |
 
 Official references:
 - Duolingo Arabic: https://en.duolingo.com/course/ar/en
@@ -145,6 +148,10 @@ Official references:
 - Mango Arabic (MSA): https://www.mangolanguages.com/available-languages/modern-standard-arabic-msa
 - Mango learning method: https://www.mangolanguages.com/how-it-works
 - Memrise Arabic: https://www.memrise.com/en-us/learn-arabic
+- AlifBee Arabic learning: https://www.alifbee.com/en/
+- AlifBee AI learning updates: https://blog.alifbee.com/news-alifbee-new-ai-features-arabic-learning/
+- Kaleela course overview: https://kaleela.com/en/about-us/
+- Arabic Unlocked: https://arabicunlocked.com/
 
 ## Recommended differentiation
 
