@@ -9,23 +9,8 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: ci
-          POSTGRES_PASSWORD: ci
-          POSTGRES_DB: adi_ci
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U ci -d adi_ci"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
-      DATABASE_URL: postgresql://ci:ci@localhost:5432/adi_ci?schema=public
-      DIRECT_URL: postgresql://ci:ci@localhost:5432/adi_ci?schema=public
+      DATABASE_URL: file:/tmp/adi-ci.db
       BETTER_AUTH_SECRET: ci-only-secret-not-used-in-production-000000000000
       BETTER_AUTH_URL: http://localhost:3000
     steps:
@@ -45,8 +30,8 @@ jobs:
         run: pnpm --filter @adi/database exec prisma validate
       - name: Generate Prisma client
         run: pnpm db:generate
-      - name: Apply migrations
-        run: pnpm db:migrate:deploy
+      - name: Sync SQLite schema
+        run: pnpm --filter @adi/database db:push
       - name: Seed sample curriculum
         run: pnpm db:seed
       - name: Typecheck web app
@@ -62,6 +47,6 @@ jobs:
       - name: Build web app
         run: pnpm build
       - name: Start web server
-        run: pnpm --filter @adi/web start > /tmp/adi-web.log 2>&1 &
+        run: pnpm db:seed && pnpm --filter @adi/web start > /tmp/adi-web.log 2>&1 &
       - name: Smoke test authentication, persistence, and authorization
         run: node scripts/smoke-test.mjs

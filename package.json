@@ -15,7 +15,8 @@
     "dev:mobile": "pnpm --filter @adi/mobile start",
     "typecheck:mobile": "pnpm --filter @adi/mobile typecheck",
     "db:seed": "pnpm --filter @adi/database db:seed",
-    "db:migrate:deploy": "pnpm --filter @adi/database db:migrate:deploy"
+    "db:migrate:deploy": "pnpm --filter @adi/database db:migrate:deploy",
+    "db:push": "pnpm --filter @adi/database db:push"
   },
   "devDependencies": {
     "typescript": "^5.7.3"

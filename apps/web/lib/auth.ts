@@ -11,7 +11,7 @@ if (!secret || secret.length < 32) {
 
 export const auth = betterAuth({
   appName: "Arabic Digital Institute",
-  database: prismaAdapter(prisma, { provider: "postgresql" }),
+  database: prismaAdapter(prisma, { provider: "sqlite" }),
   secret,
   baseURL,
   user: {
