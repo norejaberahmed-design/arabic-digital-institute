@@ -50,7 +50,7 @@ Never commit real secrets or production database URLs. Do not expose secret valu
 ## Verified release evidence
 
 - PR #10, which adds the three first-conversation lessons, passed GitHub Actions and was merged to `main`.
-- Render deployment for commit `dcf67e758db4f1c4a73b8b6224e6ae6c3250796f` was observed in `build_in_progress` during the audit. It is not marked live until a later status check confirms it.
+- Render reports deployment `dep-dbovqqqvcj2c73f1s8ag` for commit `dcf67e758db4f1c4a73b8b6224e6ae6c3250796f` as `live` (9 November 2026, 17:09 UTC). This is a live preview deployment, not production readiness; its database remains SQLite at `file:/tmp/adi.db` on an ephemeral filesystem.
 - The CI smoke test covers health, published lessons, answer-key privacy, authentication, attempts, saved progress, cross-account isolation, learner denial from admin APIs and account deletion.
 - The expanded smoke test now also checks the three first-conversation lesson slugs and sample answer submissions; its result must pass in the audit PR before it is treated as verified.
 
