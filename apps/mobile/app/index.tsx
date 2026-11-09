@@ -31,6 +31,12 @@ export default function HomeScreen() {
         <Text style={styles.note}>دروس قصيرة · تعلم من هاتفك · تقدم على مستواك</Text>
       </View>
 
+      <Pressable style={styles.alphabetShortcut} onPress={() => router.push("/alphabet")}>
+        <Text style={styles.alphabetShortcutIcon}>ب</Text>
+        <View style={styles.alphabetShortcutCopy}><Text style={styles.alphabetShortcutTitle}>استكشف الحروف العربية</Text><Text style={styles.alphabetShortcutText}>28 حرفاً · الأشكال الأربعة · تدريب تفاعلي</Text></View>
+        <Text style={styles.alphabetShortcutArrow}>←</Text>
+      </Pressable>
+
       <View style={styles.section}>
         <Text style={styles.kicker}>مسارك التعليمي</Text>
         <Text style={styles.sectionTitle}>اختر نقطة البداية</Text>
@@ -80,6 +86,12 @@ const styles = StyleSheet.create({
   kicker: { color: colors.sand, fontSize: 12, fontWeight: "700" },
   sectionTitle: { color: colors.dark, fontSize: 24, fontWeight: "700", marginTop: 4 },
   sectionDescription: { color: colors.muted, fontSize: 13, marginTop: 5 },
+  alphabetShortcut: { flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 14, backgroundColor: "#f0edff", borderWidth: 1, borderColor: "#ded9fb", marginBottom: 22 },
+  alphabetShortcutIcon: { width: 43, height: 43, borderRadius: 12, backgroundColor: "#7564d8", color: "#fff", fontSize: 29, textAlign: "center", textAlignVertical: "center", overflow: "hidden", fontWeight: "700" },
+  alphabetShortcutCopy: { flex: 1, gap: 4 },
+  alphabetShortcutTitle: { color: "#5149a5", fontSize: 13, fontWeight: "700" },
+  alphabetShortcutText: { color: "#8581aa", fontSize: 10 },
+  alphabetShortcutArrow: { color: "#7564d8", fontSize: 19 },
   levelCard: { backgroundColor: colors.white, borderColor: "#e7e6df", borderWidth: 1, borderRadius: 13, padding: 19, marginBottom: 11 },
   cardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   levelCode: { color: colors.olive, backgroundColor: "#e5ece5", paddingVertical: 5, paddingHorizontal: 9, borderRadius: 5, overflow: "hidden", fontSize: 10, fontWeight: "700" },
