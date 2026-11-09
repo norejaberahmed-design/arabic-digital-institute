@@ -73,8 +73,13 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "complete", lessonSlug }),
       });
+      const result = await response.json().catch(() => ({}));
       if (response.status === 401) {
         setNotice("سجل الدخول أولاً حتى نحفظ إكمال الدرس في حسابك.");
+        return;
+      }
+      if (response.status === 409 && result.error === "LESSON_REQUIREMENTS_INCOMPLETE") {
+        setNotice(`أكمل التمارين المطلوبة بإجابة صحيحة قبل إنهاء الدرس. المتبقي: ${result.remainingActivities ?? "بعض"}.`);
         return;
       }
       if (!response.ok) throw new Error("تعذر حفظ التقدم.");

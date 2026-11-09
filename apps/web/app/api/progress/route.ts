@@ -50,6 +50,34 @@ export async function POST(request: Request) {
     if (!lesson) return NextResponse.json({ error: "LESSON_NOT_FOUND" }, { status: 404 });
 
     if (input.action === "complete") {
+      const sections = (lesson.content as { sections?: Array<{ id?: string; type?: string }> }).sections ?? [];
+      const requiredActivityIds = Array.from(new Set(
+        sections
+          .filter(section => section.type === "multiple-choice" || section.type === "text-input")
+          .map(section => section.id)
+          .filter((id): id is string => typeof id === "string" && id.length > 0)
+      ));
+
+      if (requiredActivityIds.length > 0) {
+        const successfulAttempts = await prisma.activityAttempt.findMany({
+          where: {
+            learnerId: learner.id,
+            lessonId: lesson.id,
+            activityId: { in: requiredActivityIds },
+            isCorrect: true,
+          },
+          select: { activityId: true },
+        });
+        const satisfied = new Set(successfulAttempts.map(attempt => attempt.activityId));
+        const remainingActivities = requiredActivityIds.filter(id => !satisfied.has(id));
+        if (remainingActivities.length > 0) {
+          return NextResponse.json({
+            error: "LESSON_REQUIREMENTS_INCOMPLETE",
+            remainingActivities: remainingActivities.length,
+          }, { status: 409 });
+        }
+      }
+
       await prisma.lessonProgress.upsert({
         where: { learnerId_lessonId: { learnerId: learner.id, lessonId: lesson.id } },
         create: { learnerId: learner.id, lessonId: lesson.id, completed: true, completedAt: new Date() },
