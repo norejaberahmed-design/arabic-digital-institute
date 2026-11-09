@@ -23,7 +23,7 @@ The review inspected the repository tree and the current source for:
 - Render Blueprint and current service/deployment metadata;
 - curriculum, academic, AI, architecture, privacy, terms and launch-readiness documentation.
 
-The repository currently contains 59 tracked files. The stack in source is Next.js 15.5.29, React 19, Expo SDK 58 / React Native 0.88, Better Auth 1.7, Prisma 6.19, and SQLite. PR #10 passed CI and was merged. Its Render deployment was still building at the time of this review; do not describe the new release as live until Render confirms it.
+The repository currently contains 59 tracked files. The stack in source is Next.js 15.5.29, React 19, Expo SDK 58 / React Native 0.88, Better Auth 1.7, Prisma 6.19, and SQLite. PR #10 passed CI and was merged. Render subsequently reported the preview deployment for that commit as `live` at 17:09 UTC on 9 November 2026; this does not resolve the ephemeral SQLite persistence blocker.
 
 ## Current strengths
 
