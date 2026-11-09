@@ -12,6 +12,8 @@ type Section = {
   items?: Array<{ arabic: string; transliteration: string; english: string }>;
   prompt?: string;
   options?: Array<{ id: string; label: string }>;
+  inputTools?: string[];
+  letters?: Array<{ char: string; name: string; sound: string; example: string; meaning: string; forms: string[]; note: string }>;
   explanation?: string;
 };
 
@@ -32,6 +34,7 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
   const [busyActivity, setBusyActivity] = useState("");
   const [notice, setNotice] = useState("");
   const [completed, setCompleted] = useState(false);
+  const [activeLetter, setActiveLetter] = useState(0);
 
   async function checkAnswer(activityId: string) {
     const answer = answers[activityId];
@@ -89,6 +92,32 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
         <section className="lesson-section" key={section.id}>
           <p className="section-kicker">{section.type === "dialogue" ? "LISTEN & REPEAT" : section.type === "vocabulary" ? "NEW WORDS" : "PRACTICE"}</p>
           <h2>{section.title}</h2>
+          {section.type === "letter-studio" && section.letters?.length ? (
+            <div className="letter-studio-3d">
+              <div className="letter-model-stage" aria-live="polite">
+                <div className="letter-model-orbit" />
+                <div className="letter-model-platform" />
+                <span className="letter-model-glyph" lang="ar" dir="rtl">{section.letters[activeLetter]?.char}</span>
+                <span className="letter-model-caption">{section.letters[activeLetter]?.name}</span>
+              </div>
+              <div className="letter-model-picker" aria-label="Choose an Arabic letter">
+                {section.letters.map((letter, index) => (
+                  <button type="button" key={letter.char} aria-pressed={activeLetter === index} className={activeLetter === index ? "active" : ""} onClick={() => setActiveLetter(index)}>{letter.char}</button>
+                ))}
+              </div>
+              <div className="letter-model-details">
+                <strong>{section.letters[activeLetter]?.sound}</strong>
+                <span>{section.letters[activeLetter]?.note}</span>
+                <small>Example: {section.letters[activeLetter]?.example} — {section.letters[activeLetter]?.meaning}</small>
+              </div>
+              <div className="letter-form-strip">
+                {section.letters[activeLetter]?.forms.map((form, index) => (
+                  <div key={index}><strong lang="ar" dir="rtl">{form}</strong><small>{["Isolated", "Beginning", "Middle", "End"][index]}</small></div>
+                ))}
+              </div>
+              <p className="letter-studio-note">Touch a letter to inspect it. The model uses lightweight CSS 3D for mobile compatibility.</p>
+            </div>
+          ) : null}
           {section.lines?.map((line, index) => (
             <div className="dialogue-line" key={index}>
               <span className="speaker">{line.speaker}</span>
@@ -106,17 +135,54 @@ export default function LessonPlayer({ sections, lessonSlug }: { sections: Secti
           {section.prompt && (
             <div className="question-box">
               <h3>{section.prompt}</h3>
-              <div className="answer-options">
-                {section.options?.map((option) => (
-                  <button type="button" key={option.id} className={answers[section.id] === option.id ? "answer-option selected" : "answer-option"} onClick={() => {
-                    setAnswers(current => ({ ...current, [section.id]: option.id }));
-                    setChecked(current => ({ ...current, [section.id]: false }));
-                    setFeedback(current => ({ ...current, [section.id]: "" }));
-                  }}>
-                    {option.label}
-                  </button>
-                ))}
-              </div>
+              {section.type === "text-input" ? (
+                <div className="text-answer-builder">
+                  <input
+                    className="arabic-answer-input"
+                    type="text"
+                    inputMode="text"
+                    lang="ar"
+                    dir="rtl"
+                    autoComplete="off"
+                    aria-label="اكتب إجابتك بالعربية"
+                    placeholder="اكتب الإجابة هنا"
+                    value={answers[section.id] ?? ""}
+                    onChange={(event) => {
+                      setAnswers(current => ({ ...current, [section.id]: event.target.value }));
+                      setChecked(current => ({ ...current, [section.id]: false }));
+                      setFeedback(current => ({ ...current, [section.id]: "" }));
+                    }}
+                  />
+                  {section.inputTools?.length ? (
+                    <div className="arabic-input-tools" aria-label="أدوات كتابة الحروف والحركات">
+                      {section.inputTools.map((token, index) => (
+                        <button type="button" key={token + index} onClick={() => {
+                          setAnswers(current => ({ ...current, [section.id]: (current[section.id] ?? "") + token }));
+                          setChecked(current => ({ ...current, [section.id]: false }));
+                          setFeedback(current => ({ ...current, [section.id]: "" }));
+                        }}>{token}</button>
+                      ))}
+                      <button type="button" className="clear-arabic-input" onClick={() => {
+                        setAnswers(current => ({ ...current, [section.id]: "" }));
+                        setChecked(current => ({ ...current, [section.id]: false }));
+                        setFeedback(current => ({ ...current, [section.id]: "" }));
+                      }}>مسح</button>
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="answer-options">
+                  {section.options?.map((option) => (
+                    <button type="button" key={option.id} className={answers[section.id] === option.id ? "answer-option selected" : "answer-option"} onClick={() => {
+                      setAnswers(current => ({ ...current, [section.id]: option.id }));
+                      setChecked(current => ({ ...current, [section.id]: false }));
+                      setFeedback(current => ({ ...current, [section.id]: "" }));
+                    }}>
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
               <button type="button" className="primary-action check-answer" disabled={!answers[section.id] || busyActivity !== ""} onClick={() => checkAnswer(section.id)}>{busyActivity === section.id ? "جارٍ التحقق..." : "تحقق واحفظ الإجابة"}</button>
               {checked[section.id] && <p className={correct[section.id] ? "answer-feedback correct" : "answer-feedback incorrect"}>{feedback[section.id]} {section.explanation}</p>}
             </div>

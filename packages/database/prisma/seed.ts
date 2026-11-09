@@ -429,7 +429,285 @@ async function main() {
     });
   }
 
-  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and twelve original Pre-A1 lessons.");
+
+  // First structured letter-and-sound studio lesson. Upsert keeps this seed safe to rerun.
+  await prisma.lesson.upsert({
+    where: { levelId_slug: { levelId: level.id, slug: "letter-studio-first-four" } },
+    update: {
+      title: "Meet your first four Arabic letters",
+      summary: "Explore alif, baa, taa, and thaa, compare their connected shapes, and add short vowel marks.",
+      objective: "Recognize four Arabic letters, identify their positional forms, read باب, and add fatHa and damma to a letter.",
+      durationMin: 12,
+      status: "PUBLISHED",
+      position: -3,
+      content: {
+        version: 2,
+        language: "ar",
+        instructionLanguage: "en",
+        learningOutcomes: [
+          "Recognize ا ب ت ث by shape and name.",
+          "Identify isolated, initial, medial, and final forms of ب ت ث.",
+          "Explain that ا does not connect to the following letter.",
+          "Recognize ث as the English th sound in think, not this.",
+          "Read باب and add selected short-vowel marks."
+        ],
+        sections: [
+          {
+            id: "letter-studio-3d",
+            type: "letter-studio",
+            title: "Explore each letter in the 3D letter studio",
+            letters: [
+              { char: "ا", name: "alif", sound: "long aa", example: "باب", meaning: "door", forms: ["ا", "ا", "ـا", "ـا"], note: "Alif connects to a letter before it, but not to the letter after it." },
+              { char: "ب", name: "baa", sound: "b as in boy", example: "باب", meaning: "door", forms: ["ب", "بـ", "ـبـ", "ـب"], note: "One dot below the bowl-shaped body." },
+              { char: "ت", name: "taa", sound: "t as in top", example: "تِين", meaning: "figs", forms: ["ت", "تـ", "ـتـ", "ـت"], note: "Two dots above the body." },
+              { char: "ث", name: "thaa", sound: "th as in think", example: "ثَوْب", meaning: "garment", forms: ["ث", "ثـ", "ـثـ", "ـث"], note: "Three dots above the body. This is /θ/, not the sound in this." }
+            ]
+          },
+          {
+            id: "letter-shapes",
+            type: "vocabulary",
+            title: "Explore the four letters and their shapes",
+            items: [
+              { arabic: "ا", transliteration: "alif", english: "Alif. It can represent a long aa vowel. It does not connect to the letter that follows it." },
+              { arabic: "ب   بـ   ـبـ   ـب", transliteration: "baa", english: "Baa: isolated · beginning · middle · end. One dot below." },
+              { arabic: "ت   تـ   ـتـ   ـت", transliteration: "taa", english: "Taa: isolated · beginning · middle · end. Two dots above." },
+              { arabic: "ث   ثـ   ـثـ   ـث", transliteration: "thaa", english: "Thaa: isolated · beginning · middle · end. Three dots above." }
+            ]
+          },
+          {
+            id: "sound-contrast",
+            type: "reading",
+            title: "Hear and notice the sounds",
+            items: [
+              { arabic: "ب", transliteration: "b", english: "Like b in boy. Close your lips, then release the sound." },
+              { arabic: "ت", transliteration: "t", english: "Like t in top. Touch the tongue just behind the upper teeth." },
+              { arabic: "ث", transliteration: "th", english: "Like th in think. Let the tongue lightly meet the teeth; it is not the sound in this." },
+              { arabic: "ا", transliteration: "aa", english: "Often lengthens the open aa vowel, as in the learner-friendly model باب (baab)." }
+            ]
+          },
+          {
+            id: "right-to-left",
+            type: "multiple-choice",
+            title: "Check the writing direction",
+            prompt: "When you read an Arabic word, where do you begin?",
+            options: [
+              { id: "a", label: "At the left" },
+              { id: "b", label: "At the right" },
+              { id: "c", label: "At the bottom" }
+            ],
+            answer: "b",
+            explanation: "Arabic words are read from right to left."
+          },
+          {
+            id: "letter-b",
+            type: "multiple-choice",
+            title: "Recognize the letter",
+            prompt: "Which letter represents the b sound in boy?",
+            options: [
+              { id: "a", label: "ت" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "b",
+            explanation: "ب is baa. Its single dot is below the main shape."
+          },
+          {
+            id: "letter-th",
+            type: "multiple-choice",
+            title: "Distinguish taa and thaa",
+            prompt: "Which letter has three dots above it and the th sound in think?",
+            options: [
+              { id: "a", label: "ت" },
+              { id: "b", label: "ب" },
+              { id: "c", label: "ث" }
+            ],
+            answer: "c",
+            explanation: "ث is thaa. It has three dots above the shape."
+          },
+          {
+            id: "add-fatha",
+            type: "text-input",
+            title: "You add the vowel mark: fatHa",
+            prompt: "Build baa with fatHa. Enter the letter ب, then add fatHa above it. Your answer should be بَ.",
+            inputTools: ["ب", "ت", "َ", "ِ", "ُ"],
+            answer: "بَ",
+            explanation: "FatHa is the short a mark written above the consonant: بَ."
+          },
+          {
+            id: "add-damma",
+            type: "text-input",
+            title: "You add the vowel mark: damma",
+            prompt: "Build taa with damma. Your answer should be تُ.",
+            inputTools: ["ب", "ت", "َ", "ِ", "ُ"],
+            answer: "تُ",
+            explanation: "Damma is the short u mark written above the consonant: تُ."
+          },
+          {
+            id: "read-first-word",
+            type: "vocabulary",
+            title: "Read your first complete word",
+            items: [
+              { arabic: "بَاب", transliteration: "baab", english: "door. The long aa is represented by alif." },
+              { arabic: "باب", transliteration: "baab", english: "The same word is commonly written without short-vowel marks." }
+            ]
+          },
+          {
+            id: "meaning-bab",
+            type: "multiple-choice",
+            title: "Understand the word",
+            prompt: "What does باب mean?",
+            options: [
+              { id: "a", label: "Door" },
+              { id: "b", label: "Book" },
+              { id: "c", label: "House" }
+            ],
+            answer: "a",
+            explanation: "باب means door. Read from right to left: ب + ا + ب."
+          },
+          {
+            id: "write-bab",
+            type: "text-input",
+            title: "Build the word yourself",
+            prompt: "Type the three letters of باب in the correct order.",
+            inputTools: ["ب", "ا"],
+            answer: "باب",
+            explanation: "باب is written with baa, alif, then baa, read from right to left."
+          }
+        ]
+      }
+    },
+    create: {
+      levelId: level.id,
+      slug: "letter-studio-first-four",
+      title: "Meet your first four Arabic letters",
+      summary: "Explore alif, baa, taa, and thaa, compare their connected shapes, and add short vowel marks.",
+      objective: "Recognize four Arabic letters, identify their positional forms, read باب, and add fatHa and damma to a letter.",
+      durationMin: 12,
+      status: "PUBLISHED",
+      position: -3,
+      content: {
+        version: 2,
+        language: "ar",
+        instructionLanguage: "en",
+        learningOutcomes: [
+          "Recognize ا ب ت ث by shape and name.",
+          "Identify isolated, initial, medial, and final forms of ب ت ث.",
+          "Explain that ا does not connect to the following letter.",
+          "Recognize ث as the English th sound in think, not this.",
+          "Read باب and add selected short-vowel marks."
+        ],
+        sections: [
+          {
+            id: "letter-studio-3d",
+            type: "letter-studio",
+            title: "Explore each letter in the 3D letter studio",
+            letters: [
+              { char: "ا", name: "alif", sound: "long aa", example: "باب", meaning: "door", forms: ["ا", "ا", "ـا", "ـا"], note: "Alif connects to a letter before it, but not to the letter after it." },
+              { char: "ب", name: "baa", sound: "b as in boy", example: "باب", meaning: "door", forms: ["ب", "بـ", "ـبـ", "ـب"], note: "One dot below the bowl-shaped body." },
+              { char: "ت", name: "taa", sound: "t as in top", example: "تِين", meaning: "figs", forms: ["ت", "تـ", "ـتـ", "ـت"], note: "Two dots above the body." },
+              { char: "ث", name: "thaa", sound: "th as in think", example: "ثَوْب", meaning: "garment", forms: ["ث", "ثـ", "ـثـ", "ـث"], note: "Three dots above the body. This is /θ/, not the sound in this." }
+            ]
+          },
+          {
+            id: "letter-shapes",
+            type: "vocabulary",
+            title: "Explore the four letters and their shapes",
+            items: [
+              { arabic: "ا", transliteration: "alif", english: "Alif. It can represent a long aa vowel. It does not connect to the letter that follows it." },
+              { arabic: "ب   بـ   ـبـ   ـب", transliteration: "baa", english: "Baa: isolated · beginning · middle · end. One dot below." },
+              { arabic: "ت   تـ   ـتـ   ـت", transliteration: "taa", english: "Taa: isolated · beginning · middle · end. Two dots above." },
+              { arabic: "ث   ثـ   ـثـ   ـث", transliteration: "thaa", english: "Thaa: isolated · beginning · middle · end. Three dots above." }
+            ]
+          },
+          {
+            id: "sound-contrast",
+            type: "reading",
+            title: "Hear and notice the sounds",
+            items: [
+              { arabic: "ب", transliteration: "b", english: "Like b in boy. Close your lips, then release the sound." },
+              { arabic: "ت", transliteration: "t", english: "Like t in top. Touch the tongue just behind the upper teeth." },
+              { arabic: "ث", transliteration: "th", english: "Like th in think. Let the tongue lightly meet the teeth; it is not the sound in this." },
+              { arabic: "ا", transliteration: "aa", english: "Often lengthens the open aa vowel, as in the learner-friendly model باب (baab)." }
+            ]
+          },
+          {
+            id: "right-to-left",
+            type: "multiple-choice",
+            title: "Check the writing direction",
+            prompt: "When you read an Arabic word, where do you begin?",
+            options: [{ id: "a", label: "At the left" }, { id: "b", label: "At the right" }, { id: "c", label: "At the bottom" }],
+            answer: "b",
+            explanation: "Arabic words are read from right to left."
+          },
+          {
+            id: "letter-b",
+            type: "multiple-choice",
+            title: "Recognize the letter",
+            prompt: "Which letter represents the b sound in boy?",
+            options: [{ id: "a", label: "ت" }, { id: "b", label: "ب" }, { id: "c", label: "ث" }],
+            answer: "b",
+            explanation: "ب is baa. Its single dot is below the main shape."
+          },
+          {
+            id: "letter-th",
+            type: "multiple-choice",
+            title: "Distinguish taa and thaa",
+            prompt: "Which letter has three dots above it and the th sound in think?",
+            options: [{ id: "a", label: "ت" }, { id: "b", label: "ب" }, { id: "c", label: "ث" }],
+            answer: "c",
+            explanation: "ث is thaa. It has three dots above the shape."
+          },
+          {
+            id: "add-fatha",
+            type: "text-input",
+            title: "You add the vowel mark: fatHa",
+            prompt: "Build baa with fatHa. Enter the letter ب, then add fatHa above it. Your answer should be بَ.",
+            inputTools: ["ب", "ت", "َ", "ِ", "ُ"],
+            answer: "بَ",
+            explanation: "FatHa is the short a mark written above the consonant: بَ."
+          },
+          {
+            id: "add-damma",
+            type: "text-input",
+            title: "You add the vowel mark: damma",
+            prompt: "Build taa with damma. Your answer should be تُ.",
+            inputTools: ["ب", "ت", "َ", "ِ", "ُ"],
+            answer: "تُ",
+            explanation: "Damma is the short u mark written above the consonant: تُ."
+          },
+          {
+            id: "read-first-word",
+            type: "vocabulary",
+            title: "Read your first complete word",
+            items: [
+              { arabic: "بَاب", transliteration: "baab", english: "door. The long aa is represented by alif." },
+              { arabic: "باب", transliteration: "baab", english: "The same word is commonly written without short-vowel marks." }
+            ]
+          },
+          {
+            id: "meaning-bab",
+            type: "multiple-choice",
+            title: "Understand the word",
+            prompt: "What does باب mean?",
+            options: [{ id: "a", label: "Door" }, { id: "b", label: "Book" }, { id: "c", label: "House" }],
+            answer: "a",
+            explanation: "باب means door. Read from right to left: ب + ا + ب."
+          },
+          {
+            id: "write-bab",
+            type: "text-input",
+            title: "Build the word yourself",
+            prompt: "Type the three letters of باب in the correct order.",
+            inputTools: ["ب", "ا"],
+            answer: "باب",
+            explanation: "باب is written with baa, alif, then baa, read from right to left."
+          }
+        ]
+      }
+    }
+  });
+
+  console.log("Seeded the contemporary Arabic course, seven proficiency levels, and thirteen original Pre-A1 lessons.");
 }
 
 main()

@@ -78,9 +78,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "INVALID_ATTEMPT" }, { status: 400 });
       }
       const content = lesson.content as { sections?: Array<{ id?: string; type?: string; answer?: string; explanation?: string }> };
-      const activity = content.sections?.find(section => section.id === input.activityId && section.type === "multiple-choice");
-      if (!activity || !activity.answer) return NextResponse.json({ error: "ACTIVITY_NOT_FOUND" }, { status: 404 });
-      const isCorrect = input.answer === activity.answer;
+      const activity = content.sections?.find(section =>
+        section.id === input.activityId && (section.type === "multiple-choice" || section.type === "text-input")
+      );
+      if (!activity || typeof activity.answer !== "string") return NextResponse.json({ error: "ACTIVITY_NOT_FOUND" }, { status: 404 });
+      const normalizeAnswer = (value: string) => value.normalize("NFC").replace(/ـ/g, "").trim();
+      const isCorrect = normalizeAnswer(input.answer) === normalizeAnswer(activity.answer);
       const attempt = await prisma.activityAttempt.create({
         data: {
           learnerId: learner.id,
