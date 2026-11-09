@@ -6,15 +6,13 @@ services:
     region: frankfurt
     branch: main
     autoDeployTrigger: checksPass
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile && pnpm db:generate && pnpm db:migrate:deploy && pnpm --filter @adi/web build
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile && pnpm db:generate && pnpm --filter @adi/web build
     startCommand: pnpm --filter @adi/web start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: 22.23.4
       - key: DATABASE_URL
-        sync: false
-      - key: DIRECT_URL
         sync: false
       - key: BETTER_AUTH_SECRET
         generateValue: true
