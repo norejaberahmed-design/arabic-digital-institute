@@ -9,8 +9,23 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: adi_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d adi_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-      DATABASE_URL: file:/tmp/adi-ci.db
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/adi_ci?schema=public
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/adi_ci?schema=public
       BETTER_AUTH_SECRET: ci-only-secret-not-used-in-production-000000000000
       BETTER_AUTH_URL: http://localhost:3000
     steps:
@@ -30,8 +45,8 @@ jobs:
         run: pnpm --filter @adi/database exec prisma validate
       - name: Generate Prisma client
         run: pnpm db:generate
-      - name: Sync SQLite schema
-        run: pnpm --filter @adi/database db:push
+      - name: Apply PostgreSQL migrations
+        run: pnpm db:migrate:deploy
       - name: Seed sample curriculum
         run: pnpm db:seed
       - name: Typecheck web app
