@@ -77,6 +77,16 @@ async function main() {
   if (anonymousWrite.status !== 401) throw new Error("Anonymous progress write was not rejected.");
 
   const cookieOne = await signUp("learner-one@adi-test.com", "Learner One");
+  const prematureComplete = await request("/api/progress", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Cookie: cookieOne },
+    body: JSON.stringify({ action: "complete", lessonSlug: "first-greeting" }),
+  });
+  const prematureResult = await prematureComplete.json();
+  if (prematureComplete.status !== 409 || prematureResult.error !== "LESSON_REQUIREMENTS_INCOMPLETE") {
+    throw new Error("A learner completed a lesson without passing its required activity.");
+  }
+
   const attemptResponse = await request("/api/progress", {
     method: "POST",
     headers: { "Content-Type": "application/json", Cookie: cookieOne },
@@ -128,7 +138,7 @@ async function main() {
   const afterDelete = await request("/api/progress", { headers: { Cookie: cookieTwo } });
   if (afterDelete.status !== 401) throw new Error("Deleted account session remained active.");
 
-  console.log("PASS: health, 16+ lessons, first-conversation lesson delivery and answer-key privacy, authentication, quiz attempts, progress persistence, tenant isolation, admin authorization, and account deletion.");
+  console.log("PASS: health, 16+ lessons, first-conversation lesson delivery and answer-key privacy, authentication, mastery-gated completion, progress persistence, tenant isolation, admin authorization, and account deletion.");
 }
 
 main().catch(error => {
